@@ -4,8 +4,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ltbaltictaents.stoteliutinklas.implementacija.Factory;
-import ltbaltictaents.stoteliutinklas.interfeisai.SampleService;
+import lt.baltic.talents.stoteliutinklas.implementacija.Factory;
+import lt.baltic.talents.stoteliutinklas.interfeisai.SampleService;
 
 @RestController
 public class StoteliuTinklasController {

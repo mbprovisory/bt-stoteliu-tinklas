@@ -1,6 +1,6 @@
-package ltbaltictaents.stoteliutinklas.implementacija;
+package lt.baltic.talents.stoteliutinklas.implementacija;
 
-import ltbaltictaents.stoteliutinklas.interfeisai.SampleService;
+import lt.baltic.talents.stoteliutinklas.interfeisai.SampleService;
 
 public class SampleServiceImpl implements SampleService {
 
