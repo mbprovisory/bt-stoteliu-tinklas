@@ -3,6 +3,7 @@ build/
 .gradle
 
 *.jar
+!gradle/gradle-wrapper/*.jar
 *.aar
 *.war
 /bin/
