@@ -1,13 +1,13 @@
 # bt-stoteliu-tinklas
 
-## Projekto Integracija á karkasà 
-lt.baltictalents.stoteliutinklas.interfeisai package'e rasite interfeisus, kuriø implementacijas turësite sukurti grupinio projekto metu.
+## Projekto Integracija Ä¯ karkasÄ…
+lt.baltictalents.stoteliutinklas.interfeisai package'e rasite interfeisus, kuriÅ³ implementacijas turÄ—site sukurti grupinio projekto metu.
 
-Sukûræ interfeiso implementacijà, atnaujinkite ir klasæ `lt.baltictalents.stoteliutinklas.implementacija.Factory`
+SukÅ«rÄ™ interfeiso implementacijÄ…, atnaujinkite ir klasÄ™ `lt.baltictalents.stoteliutinklas.implementacija.Factory`
 
-Pavyzdşiui.:
+PavyzdÅ¾iui.:
 
-Turime interfeisà `SampleService`:
+Turime interfeisÄ… `SampleService`:
 
 ```java
 public interface SampleService {
@@ -15,7 +15,7 @@ public interface SampleService {
 }
 ```
 
-Kai sukursite interfeiso implementacijà, pavyzdşiui su pavadinimu `SampleServiceImpl`, tada `Factory` klasæ atnaujinkite ğtai taip:
+Kai sukursite interfeiso implementacijÄ…, pavyzdÅ¾iui su pavadinimu `SampleServiceImpl`, tada `Factory` klasÄ™ atnaujinkite Å¡tai taip:
 
 ```java
 public SampleService getSampleService() {
@@ -23,11 +23,11 @@ public SampleService getSampleService() {
 	}
 ```
 
-`getSampleService` metodas jau yra sukurtas `Factory` klasëje, jums tik reikià já uşpildyti.
-Iğ tikrøjø, galite dëti koká norite kodà á metodà `getSampleService`, svarbu tik kad jis gràşintø objektà, kuris iğpildo norimà interfeisà (ğiuo atveju - `SampleService`)
+`getSampleService` metodas jau yra sukurtas `Factory` klasÄ—je, jums tik reikia jÄ¯ uÅ¾pildyti.
+IÅ¡ tikrÅ³jÅ³, galite dÄ—ti kokÄ¯ norite kodÄ… Ä¯ metodÄ… `getSampleService`, svarbu tik kad jis grÄ…Å¾intÅ³ objektÄ…, kuris iÅ¡pildo norimÄ… interfeisÄ… (Å¡iuo atveju - `SampleService`)
 
 ## Duomenys
-`lt.baltictalents.stoteliutinklas.data.hardcode.HardCodedDb` klasë turi stoteliø sàrağà, su kuriuo reiks dirbti. Importuokite ğià klasæ á savo sukurtas klases ir naudokite duomenis.
+`lt.baltictalents.stoteliutinklas.data.hardcode.HardCodedDb` klasÄ— turi stoteliÅ³ sÄ…raÅ¡Ä…, su kuriuo reikÄ—s dirbti. Importuokite Å¡iÄ… klasÄ™ Ä¯ savo sukurtas klases ir naudokite duomenis.
 
 ## Testavimas per Postman
-Dar neaprağyta..
+Dar neapraÅ¡yta..
