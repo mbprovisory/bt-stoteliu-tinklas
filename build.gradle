@@ -1,7 +1,7 @@
 apply plugin: 'java'
-apply plugin: 'maven'
-
-group = 'com.github.jitpack'
+apply plugin: 'eclipse'
+apply plugin: 'application'
+apply plugin: 'org.springframework.boot'
 
 sourceCompatibility = 1.8 // java 8
 targetCompatibility = 1.8
@@ -11,11 +11,15 @@ compileTestJava.options.encoding = 'UTF-8'
 javadoc.options.encoding = 'UTF-8'
 
 repositories {
-  mavenCentral()
+	jcenter()
+	mavenCentral()
 }
 
 dependencies {
-  compile 'com.google.guava:guava:18.0'
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'javax.servlet:jstl'
+	
+	testCompile 'junit:junit:4.12'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -33,17 +37,12 @@ artifacts {
     archives javadocJar
 }
 
-// To specify a license in the pom:
-install {
-  repositories.mavenInstaller {
-    pom.project {
-      licenses {
-        license {
-          name 'The Apache Software License, Version 2.0'
-          url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-          distribution 'repo'
-        }
-      }
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
     }
-  }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.12.RELEASE")
+    }
 }
