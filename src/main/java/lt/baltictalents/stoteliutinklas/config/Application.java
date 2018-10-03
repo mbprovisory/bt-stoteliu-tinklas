@@ -1,12 +1,12 @@
-package lt.baltic.talents.stoteliutinklas.config;
+package lt.baltictalents.stoteliutinklas.config;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
-import lt.baltic.talents.stoteliutinklas.implementacija.Factory;
-import lt.baltic.talents.stoteliutinklas.interfeisai.SampleService;
+import lt.baltictalents.stoteliutinklas.implementacija.Factory;
+import lt.baltictalents.stoteliutinklas.interfeisai.SampleService;
 
 @SpringBootApplication
 @ComponentScan(
