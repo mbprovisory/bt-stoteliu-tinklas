@@ -5,7 +5,7 @@ lt.baltictalents.stoteliutinklas.interfeisai package'e rasite interfeisus, kuri�
 
 Sukūrę interfeiso implementaciją, atnaujinkite ir klasę `lt.baltictalents.stoteliutinklas.implementacija.Factory`
 
-Pavyzdžiui.:
+Pavyzdžiui:
 
 Turime interfeisą `SampleService`:
 
@@ -20,7 +20,7 @@ Kai sukursite interfeiso implementaciją, pavyzdžiui su pavadinimu `SampleServi
 ```java
 public SampleService getSampleService() {
 		return new SampleServiceImpl();
-	}
+}
 ```
 
 `getSampleService` metodas jau yra sukurtas `Factory` klasėje, jums tik reikia jį užpildyti.
