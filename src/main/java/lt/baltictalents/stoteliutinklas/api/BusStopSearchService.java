@@ -1,4 +1,4 @@
-package lt.baltictalents.stoteliutinklas.interfeisai;
+package lt.baltictalents.stoteliutinklas.api;
 
 import java.util.List;
 

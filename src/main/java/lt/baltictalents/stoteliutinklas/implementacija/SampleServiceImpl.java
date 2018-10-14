@@ -2,7 +2,7 @@ package lt.baltictalents.stoteliutinklas.implementacija;
 
 import org.springframework.stereotype.Service;
 
-import lt.baltictalents.stoteliutinklas.interfeisai.SampleService;
+import lt.baltictalents.stoteliutinklas.api.SampleService;
 
 @Service
 public class SampleServiceImpl implements SampleService {
