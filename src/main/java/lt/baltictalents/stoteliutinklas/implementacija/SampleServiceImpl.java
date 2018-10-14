@@ -6,7 +6,7 @@ public class SampleServiceImpl implements SampleService {
 
 	@Override
 	public String getHello() {
-		return "labas, matau, kad susikompiliavai ir pasileidai ğá fundamentà kursui, gerai, sveikinu, progresas.";
+		return "labas, matau, kad susikompiliavai ir pasileidai ğá karkasà Java1 kursui, sveikinu.";
 	}
 
 }
