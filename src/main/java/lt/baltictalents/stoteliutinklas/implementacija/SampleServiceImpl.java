@@ -1,7 +1,10 @@
 package lt.baltictalents.stoteliutinklas.implementacija;
 
+import org.springframework.stereotype.Service;
+
 import lt.baltictalents.stoteliutinklas.interfeisai.SampleService;
 
+@Service
 public class SampleServiceImpl implements SampleService {
 
 	@Override
