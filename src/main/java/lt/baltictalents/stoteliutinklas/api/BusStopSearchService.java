@@ -6,5 +6,5 @@ import lt.baltictalents.stoteliutinklas.beans.Square;
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
 
 public interface BusStopSearchService {
-	public List<Station> getBusStopsInSquate(Square square);
+	public List<Station> getBusStopsInSquare(Square square);
 }
