@@ -8,7 +8,7 @@ public class SampleServiceImpl implements SampleService {
 	@Override
 	public SampleResponse getSampleResponse() {
 		SampleResponse sr = new SampleResponse();
-		sr.setWinningSign("Zirkes");
+		sr.setWinningSign("Zirkles");
 		return sr;
 	}
 
