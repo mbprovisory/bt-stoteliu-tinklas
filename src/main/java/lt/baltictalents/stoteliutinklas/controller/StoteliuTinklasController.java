@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import lt.baltictalents.stoteliutinklas.api.SampleService;
+import lt.baltictalents.stoteliutinklas.pavyzdys.SampleResponse;
+import lt.baltictalents.stoteliutinklas.pavyzdys.SampleService;
 
 @RestController
 public class StoteliuTinklasController {
@@ -14,8 +15,8 @@ public class StoteliuTinklasController {
 	SampleService sampleService;
 	
 	@RequestMapping(path="/", method=RequestMethod.GET, produces="application/json; charset=UTF-8")
-    public String homePage() {
-    	return this.sampleService.getHello();
+    public SampleResponse sampleResponse() {
+    	return this.sampleService.getSampleResponse();
     }
 	
 }
