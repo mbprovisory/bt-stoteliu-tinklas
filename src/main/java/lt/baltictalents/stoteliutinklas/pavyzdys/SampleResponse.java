@@ -11,3 +11,4 @@ public class SampleResponse {
 		this.winningSign = winningSign;
 	}
 }
+////cia patikrinimas
