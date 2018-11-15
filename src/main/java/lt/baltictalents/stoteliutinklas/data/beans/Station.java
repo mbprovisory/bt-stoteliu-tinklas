@@ -45,5 +45,17 @@ public class Station {
 	public void setRoutes(String[] routes) {
 		this.routes = routes;
 	}
+	
+	public String toString() {
+	    StringBuilder sb = new StringBuilder(getName());
+	    sb.append("    longit.: ").append(getLongtitute()).append(";  latit.: ").append(getLatitude());
+	    return sb.toString();
+	}
+	
+	public String toLongString() {
+	    StringBuilder sb = new StringBuilder(this.toString());
+	    for(String s: getRoutes()) {sb.append("\n   -   ").append(s);}
+	    return sb.toString();
+	}
 
 }
