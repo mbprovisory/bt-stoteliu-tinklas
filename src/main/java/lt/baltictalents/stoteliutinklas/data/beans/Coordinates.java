@@ -4,7 +4,7 @@ public class Coordinates {
     double longitude;
     double latitude;
     
-    //public Coordinates() {}
+    public Coordinates() {}
     
     public Coordinates(String logitudeString, String latitudeString) {
 	this.latitude = Double.parseDouble(latitudeString);
