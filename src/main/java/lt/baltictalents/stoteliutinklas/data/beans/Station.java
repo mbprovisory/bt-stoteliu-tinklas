@@ -57,5 +57,17 @@ public class Station {
 	    for(String s: getRoutes()) {sb.append("\n   -   ").append(s);}
 	    return sb.toString();
 	}
+	
+	public double getDistanceDeg(Coordinates coordinates) {
+	    double stationLongitude = Double.parseDouble(this.getLongtitute());
+	    double deltaLongitude = coordinates.getLongitude() - stationLongitude;
+	    double stationLatitude = Double.parseDouble(this.getLatitude());
+	    double deltaLatitude = coordinates.getLatitude() - stationLatitude;
+	    deltaLongitude = deltaLongitude * Math.cos(stationLatitude * 2 * Math.PI /360);//correction for latitude
+	    
+	    double distance = deltaLongitude * deltaLongitude + deltaLatitude * deltaLatitude;
+	    distance = Math.sqrt(distance);
+	    return distance;
+	    }
 
 }
