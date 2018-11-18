@@ -21,7 +21,7 @@ public class PavilionsByRectangle {
 		x1 = Double.parseDouble(lon1);
 		y0 = Double.parseDouble(lat);
 		y1 = Double.parseDouble(lat1);
-		xx = Double.parseDouble(l.getLongtitute());
+		xx = Double.parseDouble(l.getLongitude());
 		yy = Double.parseDouble(l.getLatitude());
 		if  (((x0 <= xx) && (xx <= x1))&& (((y0 <= yy) && (yy <= y1)))) {
 		
