@@ -1,4 +1,4 @@
-package lt.baltictalents.stoteliutinklas.tests.mangirdas;
+package lt.baltictalents.stoteliutinklas.tests;
 
 import static org.junit.Assert.*;
 
