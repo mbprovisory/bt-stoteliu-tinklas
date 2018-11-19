@@ -33,7 +33,7 @@ public class MainProcess {
 		System.out.println("PavilionsByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
 		System.out.println("NearestPavilionByCoords");
 		System.out.println("BusiestPavilionByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
-		System.out.println("PavilionsByName");
+		System.out.println("PavilionsByName <StationName>");
 		System.out.println("PavilionsByRadius <Longitude> <Latitude> <radius> angle/meters");
 		System.out.println("RoutesByStationName");
 		System.out.println("RoutesByPavilionCoords");
