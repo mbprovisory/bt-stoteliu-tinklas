@@ -54,7 +54,7 @@ public class BusiestPavilionByRectangle {
 	List<Station> stotelesInRect = 
 		connection.getStoteles()
 		.stream()
-		.filter(st ->  rectangle.contains(new Coordinates(st.getLongtitute(),st.getLatitude())))
+		.filter(st ->  rectangle.contains(new Coordinates(st.getLongitude(),st.getLatitude())))
 		.collect(toList());
 	
 	return stotelesInRect;
