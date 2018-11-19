@@ -20,6 +20,7 @@ public class MainProcess {
 		ExecInstructions();
 		System.out.println("Kur <args> yra:");
 		HelpCommandsList();
+		System.out.println("Jei tarp <args> pasitaiko zodziai neapskliausti <>, juos taip ir reiktu ivesti.");
 	}
 	
 	static void ExecInstructions()
@@ -29,15 +30,15 @@ public class MainProcess {
 	
 	static void HelpCommandsList()
 	{
-		System.out.println("PavilionsByRectangle");
+		System.out.println("PavilionsByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
 		System.out.println("NearestPavilionByCoords");
-		System.out.println("BusiestPavilionByRectangle");
+		System.out.println("BusiestPavilionByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
 		System.out.println("PavilionsByName");
-		System.out.println("PavilionsByRadius <Longitude> <Latitude> <radius> <");
+		System.out.println("PavilionsByRadius <Longitude> <Latitude> <radius> angle/meters");
 		System.out.println("RoutesByStationName");
 		System.out.println("RoutesByPavilionCoords");
 		System.out.println("StationsAndPavilionsByRouteNumber");
-		System.out.println("PavilionsByRouteNumberAndDirection");
-		System.out.println("");
+		System.out.println("PavilionsByRouteNumberAndDirection <Route number and direction>");
+		System.out.println("-----------------------------------------------------");
 	}
 }
