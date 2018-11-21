@@ -31,7 +31,7 @@ public class NearestPavilionByCoords {
 //		for (Station eile: sarasas3) {
 //			System.out.println(eile);
 //		}
-		System.out.println(sarasas3);
+		
 		return nearest;
 	}
 

@@ -31,9 +31,9 @@ public class MainProcess {
 					
 					
 				}
-				else if (args[0].equalsIgnoreCase("NearestPavilionByCoords"))//TODO
+				else if (args[0].equalsIgnoreCase("NearestPavilionByCoords"))//OK
 				{
-					//NearestPavilionByRectangle
+					System.out.println(new NearestPavilionByCoords(connection).get(args[1], args[2]));
 				}
 				else if (args[0].equalsIgnoreCase("BusiestPavilionByRectangle"))//OK
 				{
