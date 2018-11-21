@@ -4,11 +4,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
-import lt.baltictalents.stoteliutinklas.data.hardcode.HardCodedDb;
 import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
 
+/*
+ * 1)Įvedus kvadrato koordinates, t.y. 4 skaičius, kur pirmi du skaičiai būtų kvadrato kairys viršutinis 
+ * kampas, o paskutiniai du – kvadrato dešinys apatinis kampas, atspausdinti visus stotelių paviljonus tame 
+ * kvadrate.
+ */
 public class PavilionsByRectangle {
 	
+protected DataListFactory connection;               // nuo
+	
+	public PavilionsByRectangle(DataListFactory connection)
+	{
+		this.connection = connection;
+	}                                               //  iki
 	public List<Station> get(String lon, String lat,String lon1, String lat1) {
 
 		List<Station> fromDb = new DataListFactory().getStoteles();
