@@ -8,10 +8,15 @@ import lt.baltictalents.stoteliutinklas.data.hardcode.HardCodedDb;
 import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
 
 public class PavilionsByRectangle {
+	DataListFactory connection;
+	public PavilionsByRectangle(DataListFactory connection)
+	{
+		this.connection = connection;
+	}
 	
 	public List<Station> get(String lon, String lat,String lon1, String lat1) {
 
-		List<Station> fromDb = new DataListFactory().getStoteles();
+		List<Station> fromDb = connection.getStoteles();
 	List<Station> listStation = new LinkedList<>();
 
 	for (Station l : fromDb) {

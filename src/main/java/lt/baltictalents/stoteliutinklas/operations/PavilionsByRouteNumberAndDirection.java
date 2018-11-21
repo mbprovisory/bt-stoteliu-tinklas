@@ -24,7 +24,7 @@ public class PavilionsByRouteNumberAndDirection
 	{
 		//TODO string normalization to class
 		routeNameAndDirection = routeNameAndDirection.toLowerCase(Locale.forLanguageTag("lt"));
-		
+		String debug2 = routeNameAndDirection.toLowerCase(Locale.forLanguageTag("lt"));
 		List<Station> data = connection.getStoteles();
 		List<Station> ret = new LinkedList<>();
 		String[] routes = null;
@@ -34,6 +34,7 @@ public class PavilionsByRouteNumberAndDirection
 			routes = station.getRoutes();
 			for(int i = 0, bContinue=1; (i!=routes.length) && (bContinue==1); i++)
 			{
+				String debug = routes[i].toLowerCase(Locale.forLanguageTag("lt"));
 				if (routes[i].toLowerCase(Locale.forLanguageTag("lt")).equals(routeNameAndDirection))
 				{
 					ret.add(station);
