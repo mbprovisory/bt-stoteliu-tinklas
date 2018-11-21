@@ -6,11 +6,11 @@
 ## Testavimas per Postman
 Dar neaprašyta..
 
-<<<<<<< HEAD
-
-
 
 `As Mangirdas idedu sia eilute cia. mantas poriudejo
 =======
 ## Rimantas pridejo ### ir vel pridejo
->>>>>>> 476464105da6a8ad7e11f7ed21303cca87c1b4bd
+Dar neaprašyta..
+
+
+Paulius bt-stoteliu-tinklas
