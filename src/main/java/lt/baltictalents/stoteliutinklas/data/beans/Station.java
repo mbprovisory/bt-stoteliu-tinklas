@@ -2,14 +2,14 @@ package lt.baltictalents.stoteliutinklas.data.beans;
 
 public class Station {
 	String name;
-	String longtitute;
+	String longitude;
 	String latitude;
 	String[] routes;
 
 	public Station(String name, String lon, String lat, String[] routes) {
 		super();
 		this.name = name;
-		this.longtitute = lon;
+		this.longitude = lon;
 		this.latitude = lat;
 		this.routes = routes;
 	}
@@ -22,12 +22,12 @@ public class Station {
 		this.name = name;
 	}
 
-	public String getLongtitute() {
-		return longtitute;
+	public String getLongitude() {
+		return longitude;
 	}
 
-	public void setLongtitute(String longtitute) {
-		this.longtitute = longtitute;
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 
 	public String getLatitude() {
@@ -48,7 +48,7 @@ public class Station {
 	
 	public String toString() {
 	    StringBuilder sb = new StringBuilder(getName());
-	    sb.append("    longit.: ").append(getLongtitute()).append(";  latit.: ").append(getLatitude());
+	    sb.append("    longit.: ").append(getLongitude()).append(";  latit.: ").append(getLatitude());
 	    return sb.toString();
 	}
 	
@@ -59,7 +59,7 @@ public class Station {
 	}
 	
 	public double getDistanceDeg(Coordinates coordinates) {
-	    double stationLongitude = Double.parseDouble(this.getLongtitute());
+	    double stationLongitude = Double.parseDouble(this.getLongitude());
 	    double deltaLongitude = coordinates.getLongitude() - stationLongitude;
 	    double stationLatitude = Double.parseDouble(this.getLatitude());
 	    double deltaLatitude = coordinates.getLatitude() - stationLatitude;
