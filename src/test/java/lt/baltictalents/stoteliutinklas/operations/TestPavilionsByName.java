@@ -1,10 +1,9 @@
 package lt.baltictalents.stoteliutinklas.operations;
 
 import static org.junit.Assert.*;
+import org.junit.*;
 
 import java.util.List;
-
-import org.junit.*;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
 import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;

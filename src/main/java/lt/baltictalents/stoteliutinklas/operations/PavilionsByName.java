@@ -13,7 +13,7 @@ public class PavilionsByName {
     public DataListFactory connection;
     
     public PavilionsByName(DataListFactory connection) {
-	this.connection = connection;
+	 this.connection = connection;
     }
     
     public List<Station> get(String pavilName){
