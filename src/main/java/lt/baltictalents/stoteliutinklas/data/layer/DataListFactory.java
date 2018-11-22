@@ -4,15 +4,28 @@ import java.util.List;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
 import lt.baltictalents.stoteliutinklas.data.hardcode.HardCodedDb;
+import lt.baltictalents.stoteliutinklas.data.textbased.TextBasedDb;
 
 public class DataListFactory {
-    
+    public static final int HARDCODEDDB = 1;
+    public static final int TEXTBASEDDB = 2;
+    private int connectionType = HARDCODEDDB;
     private List<Station> stoteles;
-    
+
     public List<Station> getStoteles(){
 
-		this.stoteles = new HardCodedDb().getStoteles();
-		return stoteles;
-    }
+	switch(connectionType) {
+	case HARDCODEDDB: 
+	    this.stoteles = new HardCodedDb().getStoteles();
+	    return stoteles;
 
+	case TEXTBASEDDB:
+	    this.stoteles = new TextBasedDb().getStoteles();
+	    return stoteles;
+	    
+	default: 
+	    this.stoteles = new HardCodedDb().getStoteles();
+	    return stoteles;
+	}
+    }
 }
