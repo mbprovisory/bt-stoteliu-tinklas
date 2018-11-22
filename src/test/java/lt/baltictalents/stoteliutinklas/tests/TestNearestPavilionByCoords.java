@@ -2,6 +2,7 @@ package lt.baltictalents.stoteliutinklas.tests;
 
 import static org.junit.Assert.*;
 
+import lt.baltictalents.stoteliutinklas.data.beans.*;
 import org.junit.Test;
 
 import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
@@ -15,10 +16,10 @@ public class TestNearestPavilionByCoords {
 	
 	@Test
 	public void testNearestPavilionByCoords() {
-		assertEquals("Kalvarijos", pavilionas.get("25.28", "54.74").get().getName()); 
-		assertEquals("Naujakiemio st.", pavilionas.get("25.2814121", "54.7238768").get().getName());
-		assertEquals("Ąžuolyno st.", pavilionas.get("25.2353227", "54.7047766").get().getName());
-		assertEquals("Ateities st.", pavilionas.get("25.2658484", "54.7374934").get().getName());
+		assertEquals("Kalvarijos", pavilionas.get("25.28", "54.74").getName()); 
+		assertEquals("Naujakiemio st.", pavilionas.get("25.2814121", "54.7238768").getName());
+		assertEquals("Ąžuolyno st.", pavilionas.get("25.2353227", "54.7047766").getName());
+		assertEquals("Ateities st.", pavilionas.get("25.2658484", "54.7374934").getName());
 	}
 
 	@Test
