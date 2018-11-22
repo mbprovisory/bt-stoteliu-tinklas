@@ -60,7 +60,16 @@ public class MainProcess {
 				}
 				else if (args[0].equalsIgnoreCase("RoutesByStationName"))//TODO
 				{
-					
+					RoutesNumbersByStationName instance = new RoutesNumbersByStationName(connection);
+					List<String[]> station = instance.get(args[1]);
+					for(String[] s : station) 
+					{
+						for (String ss: s)
+						{
+							System.out.print(ss + " | ");
+						}
+						System.out.println();
+					}
 				}
 				else if (args[0].equalsIgnoreCase("RoutesByPavilionCoords"))//TODO
 				{
