@@ -10,7 +10,15 @@ public class DataListFactory {
     public static final int HARDCODEDDB = 1;
     public static final int TEXTBASEDDB = 2;
     private int connectionType = HARDCODEDDB;
-    private List<Station> stoteles;
+    private List<Station> stoteles;    
+
+    public int getConnectionType() {
+        return this.connectionType;
+    }
+
+    public void setConnectionType(int connectionType) {
+        this.connectionType = connectionType;
+    }
 
     public List<Station> getStoteles(){
 
