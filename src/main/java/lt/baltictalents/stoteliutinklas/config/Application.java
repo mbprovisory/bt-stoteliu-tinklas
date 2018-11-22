@@ -18,12 +18,10 @@ import org.springframework.context.annotation.ComponentScan;
 public class Application {
 
     public static void main(String[] args) {
-    	//force push
         //SpringApplication.run(new Class[] { Application.class }, args);
-    	//MainProcess.HandleArgs(args);
+    	MainProcess.HandleArgs(args);
     	
-    	Station listas = new NearestPavilionByCoords(new DataListFactory()).get("25.28", "54.74");
-    	System.out.println("----------------------\n" + listas + "\n----------------------" );
+
     }
 }
 

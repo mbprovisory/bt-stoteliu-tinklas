@@ -25,9 +25,10 @@ public class PavilionsByRadius
 	{
 		List<Station> data = connection.getStoteles();
 		List<Station> ret = new LinkedList<>();
+		int meters = (int)radius;
 		radius *= radius;
 		double expr=0;
-		
+	 
 		for (Station station : data) 
 		{
 			if(measurement == Measurement.RADIUS)
@@ -44,7 +45,7 @@ public class PavilionsByRadius
 						Double.parseDouble(station.getLongitude()), 
 						Double.parseDouble(Clat), 
 						Double.parseDouble(Clon));
-				if (expr<radius) ret.add(station);
+				if (expr<meters) ret.add(station);
 			}
 		}
 		return ret;
