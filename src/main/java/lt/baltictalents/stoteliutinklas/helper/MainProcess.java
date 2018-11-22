@@ -58,7 +58,7 @@ public class MainProcess {
 					List<Station> station = instance.get(args[1],args[2], Double.parseDouble(args[3]), m);
 					for(Station s : station) System.out.println(s.toString());
 				}
-				else if (args[0].equalsIgnoreCase("RoutesByStationName"))//TODO
+				else if (args[0].equalsIgnoreCase("RoutesByStationName"))//OK
 				{
 					RoutesNumbersByStationName instance = new RoutesNumbersByStationName(connection);
 					List<String[]> station = instance.get(args[1]);
@@ -73,7 +73,8 @@ public class MainProcess {
 				}
 				else if (args[0].equalsIgnoreCase("RoutesByPavilionCoords"))//TODO
 				{
-					
+					RoutesByPavilionCoords instance = new RoutesByPavilionCoords(connection);
+					instance.get(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
 				}
 				else if (args[0].equalsIgnoreCase("StationsAndPavilionsByRouteNumber")) //OK?
 				{
