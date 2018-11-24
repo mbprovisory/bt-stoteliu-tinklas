@@ -14,121 +14,142 @@ import lt.baltictalents.stoteliutinklas.data.layer.*;
 public class MainProcess {
 	public static void HandleArgs(String[] args)
 	{
-		try
+		boolean bOuterCycle = true;
+		while(bOuterCycle)
 		{
-			HelpMain();
-			
-			List<Station> previousQueryResults = null, queryResults = null;
-			String[] incomingArgs;
-			
-			if (args.length==0 || args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
+			try
 			{
-				//HelpMain();
+				HelpMain();
+				
+				List<Station> previousQueryResults = null, queryResults = null;
+				String[] incomingArgs;
+				
+				if (args.length==0 || args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
+				{
+					//HelpMain();
+				}
+				else
+				{
+					SelectOperations(args, null);	
+				}
+				
+				boolean bCycle = true;
+				while (bCycle)
+				{
+					
+					System.out.println("Iveskite uzklausa (pagalbai gauti rasykite ? arba help, isejimui - exit");
+					Scanner scanner = new Scanner(System.in);
+					String s = scanner.nextLine();
+					if (s.equalsIgnoreCase("exit")||s.equalsIgnoreCase("quit"))
+					{
+						bCycle = false;
+						bOuterCycle = false;
+					}
+					else
+					{
+						incomingArgs = Helper.RegexParser(s);
+						//shift logic
+						previousQueryResults = SelectOperations(incomingArgs, previousQueryResults);
+					}
+					
+					
+				}
+				
 			}
-			else
+			catch (Exception e)
 			{
-				SelectOperations(args);	
+				System.out.println("Neteisinga uzklausa.");
 			}
-			while (true)
-			{
-				
-				System.out.println("Iveskite uzklausa (pagalbai gauti rasykite ? arba help).");
-				Scanner scanner = new Scanner(System.in);
-				String s = scanner.nextLine();
-				
-				incomingArgs = Helper.RegexParser(s);
-				//shift logic
-				//
-				
-				
-				previousQueryResults = SelectOperations(incomingArgs);
-				
-			}
-			
-		}
-		catch (Exception e)
-		{
-			System.out.println("Neteisinga uzklausa.");
 		}
 	}
 	
-	static List<Station> SelectOperations(String []args)
+	static List<Station> SelectOperations(String []args, List<Station> stationList)
 	{
 		List<Station> ret = new LinkedList<Station>();
-		
+		int s; //shifter
 		DataListFactory connection = new DataListFactory();
-		if (args[0].equalsIgnoreCase("PavilionsByRectangle")) //OK
+		if(args[0].toLowerCase().equals("filter")) 
+		{ 
+			connection.SetStoteles(stationList);
+			connection.setConnectionType(DataListFactory.VIRTUALDB);
+			s = 1;
+		}
+		else s = 0;
+		
+		
+		if (args[0+s].equalsIgnoreCase("PavilionsByRectangle")) //OK
 		{
 			PavilionsByRectangle  instance = new PavilionsByRectangle(connection);
-			List<Station> station = instance.get(args[1], args[2], args[3], args[4]);
-			for(Station s : station) System.out.println(s.toString());
+			List<Station> station = instance.get(args[1+s], args[2+s], args[3+s], args[4+s]);
+			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;	
 		}
-		else if (args[0].equalsIgnoreCase("NearestPavilionByCoords"))//OK
+		else if (args[0+s].equalsIgnoreCase("NearestPavilionByCoords"))//OK
 		{
-			ret.add(new NearestPavilionByCoords(connection).get(args[1], args[2]));
+			NearestPavilionByCoords npc = new NearestPavilionByCoords(connection);
+			ret.add(new NearestPavilionByCoords(connection).get(args[1+s], args[2+s]));
 			System.out.println(ret.get(0));
 		}
-		else if (args[0].equalsIgnoreCase("BusiestPavilionByRectangle"))//OK
+		else if (args[0+s].equalsIgnoreCase("BusiestPavilionByRectangle"))//OK
 		{
 			BusiestPavilionByRectangle instance = new BusiestPavilionByRectangle(connection);
-			List<Station> station = instance.get(args[1], args[2], args[3], args[4]);
-			for(Station s : station) System.out.println(s.toString());
+			List<Station> station = instance.get(args[1+s], args[2+s], args[3+s], args[4+s]);
+			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;
 		}
-		else if (args[0].equalsIgnoreCase("PavilionsByName")) //OK
+		else if (args[0+s].equalsIgnoreCase("PavilionsByName")) //OK
 		{
 			PavilionsByName instance = new PavilionsByName(connection);
-			List<Station> station = instance.get(args[1]);
-			for(Station s : station) System.out.println(s.toString());
+			List<Station> station = instance.get(args[1+s]);
+			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;
 		}
-		else if (args[0].equalsIgnoreCase("PavilionsByRadius")) //OK
+		else if (args[0+s].equalsIgnoreCase("PavilionsByRadius")) //OK
 		{
 			PavilionsByRadius instance = new PavilionsByRadius(connection);
 			
 			Measurement m= Measurement.METERS; 
-			if(args[3].toLowerCase().equals("angle")) m = Measurement.RADIUS;
+			if(args[3+s].toLowerCase().equals("angle")) m = Measurement.RADIUS;
 			
-			List<Station> station = instance.get(args[1],args[2], Double.parseDouble(args[3]), m);
-			for(Station s : station) System.out.println(s.toString());
+			List<Station> station = instance.get(args[1+s],args[2+s], Double.parseDouble(args[3+s]), m);
+			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;
 		}
-		else if (args[0].equalsIgnoreCase("RoutesByStationName"))//OK
+		else if (args[0+s].equalsIgnoreCase("RoutesByStationName"))//OK
 		{
 			RoutesNumbersByStationName instance = new RoutesNumbersByStationName(connection);
-			List<String[]> station = instance.get(args[1]);
-			for(String[] s : station) 
+			List<String[]> station = instance.get(args[1+s]);
+			for(String[] ss : station) 
 			{
-				for (String ss: s)
+				for (String sss: ss)
 				{
-					System.out.print(ss + " | ");
+					System.out.print(sss + " | ");
 				}
 				System.out.println();
 			}
 			//ret = station; invalid logic
 		}
-		else if (args[0].equalsIgnoreCase("RoutesByPavilionCoords"))//OK
+		else if (args[0+s].equalsIgnoreCase("RoutesByPavilionCoords"))//OK
 		{
 			RoutesByPavilionCoords instance = new RoutesByPavilionCoords(connection);
-			ret = instance.get(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
+			ret = instance.get(Double.parseDouble(args[1+s]), Double.parseDouble(args[2+s]));
 			
 		}
-		else if (args[0].equalsIgnoreCase("StationsAndPavilionsByRouteNumber")) //OK?
+		else if (args[0+s].equalsIgnoreCase("StationsAndPavilionsByRouteNumber")) //OK?
 		{
 			StationsAndPavilionsByRouteNumber instance = new StationsAndPavilionsByRouteNumber(connection);
-			List<Station> station = instance.get(args[1]);
-			for(Station s : station) System.out.println(s.toString());
+			List<Station> station = instance.get(args[1+s]);
+			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;
 		}
 		/*
 		 * bugs with Troleibusas 16: Pašilaičiai - Stotis  => Pašilaiciai - Stotis
 		 */
-		else if (args[0].equalsIgnoreCase("PavilionsByRouteNumberAndDirection")) //BUGS
+		else if (args[0+s].equalsIgnoreCase("PavilionsByRouteNumberAndDirection")) //BUGS
 		{
 			PavilionsByRouteNumberAndDirection instance = new PavilionsByRouteNumberAndDirection(connection);
-			List<Station> station = instance.get(args[1]);
-			for(Station s : station) System.out.println(s.toString());
+			List<Station> station = instance.get(args[1+s]);
+			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;
 		}
 		else HelpMain();

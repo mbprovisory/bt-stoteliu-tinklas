@@ -9,6 +9,7 @@ import lt.baltictalents.stoteliutinklas.data.textbased.TextBasedDb;
 public class DataListFactory {
     public static final int HARDCODEDDB = 1;
     public static final int TEXTBASEDDB = 2;
+    public static final int VIRTUALDB = 3;
     private int connectionType = HARDCODEDDB;
     private List<Station> stoteles;    
 
@@ -31,9 +32,18 @@ public class DataListFactory {
 	    this.stoteles = new TextBasedDb().getStoteles();
 	    return stoteles;
 	    
+	case VIRTUALDB:
+	    return this.stoteles;
+	    
 	default: 
 	    this.stoteles = new HardCodedDb().getStoteles();
 	    return stoteles;
 	}
+    }
+    
+    //netrinti
+    public void SetStoteles(List<Station> stoteles) {
+    	this.stoteles = stoteles;
+    	this.connectionType = DataListFactory.VIRTUALDB;
     }
 }
