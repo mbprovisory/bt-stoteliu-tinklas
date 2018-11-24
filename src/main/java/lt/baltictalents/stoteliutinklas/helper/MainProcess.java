@@ -2,6 +2,7 @@ package lt.baltictalents.stoteliutinklas.helper;
 import lt.baltictalents.stoteliutinklas.operations.*;
 import lt.baltictalents.stoteliutinklas.operations.PavilionsByRadius.Measurement;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,6 +17,10 @@ public class MainProcess {
 		try
 		{
 			HelpMain();
+			
+			List<Station> previousQueryResults = null, queryResults = null;
+			String[] incomingArgs;
+			
 			if (args.length==0 || args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
 			{
 				//HelpMain();
@@ -30,10 +35,16 @@ public class MainProcess {
 				System.out.println("Iveskite uzklausa (pagalbai gauti rasykite ? arba help).");
 				Scanner scanner = new Scanner(System.in);
 				String s = scanner.nextLine();
-				SelectOperations(Helper.RegexParser(s));
+				
+				incomingArgs = Helper.RegexParser(s);
+				//shift logic
+				//
+				
+				
+				previousQueryResults = SelectOperations(incomingArgs);
 				
 			}
-			//SelectOperations(args);
+			
 		}
 		catch (Exception e)
 		{
@@ -41,34 +52,36 @@ public class MainProcess {
 		}
 	}
 	
-	static void SelectOperations(String []args)
+	static List<Station> SelectOperations(String []args)
 	{
+		List<Station> ret = new LinkedList<Station>();
+		
 		DataListFactory connection = new DataListFactory();
 		if (args[0].equalsIgnoreCase("PavilionsByRectangle")) //OK
 		{
 			PavilionsByRectangle  instance = new PavilionsByRectangle(connection);
 			List<Station> station = instance.get(args[1], args[2], args[3], args[4]);
 			for(Station s : station) System.out.println(s.toString());
-				
-			
-			
+			ret = station;	
 		}
 		else if (args[0].equalsIgnoreCase("NearestPavilionByCoords"))//OK
 		{
-			System.out.println(new NearestPavilionByCoords(connection).get(args[1], args[2]));
+			ret.add(new NearestPavilionByCoords(connection).get(args[1], args[2]));
+			System.out.println(ret.get(0));
 		}
 		else if (args[0].equalsIgnoreCase("BusiestPavilionByRectangle"))//OK
 		{
 			BusiestPavilionByRectangle instance = new BusiestPavilionByRectangle(connection);
 			List<Station> station = instance.get(args[1], args[2], args[3], args[4]);
 			for(Station s : station) System.out.println(s.toString());
-			
+			ret = station;
 		}
 		else if (args[0].equalsIgnoreCase("PavilionsByName")) //OK
 		{
 			PavilionsByName instance = new PavilionsByName(connection);
 			List<Station> station = instance.get(args[1]);
 			for(Station s : station) System.out.println(s.toString());
+			ret = station;
 		}
 		else if (args[0].equalsIgnoreCase("PavilionsByRadius")) //OK
 		{
@@ -79,6 +92,7 @@ public class MainProcess {
 			
 			List<Station> station = instance.get(args[1],args[2], Double.parseDouble(args[3]), m);
 			for(Station s : station) System.out.println(s.toString());
+			ret = station;
 		}
 		else if (args[0].equalsIgnoreCase("RoutesByStationName"))//OK
 		{
@@ -92,17 +106,20 @@ public class MainProcess {
 				}
 				System.out.println();
 			}
+			//ret = station; invalid logic
 		}
 		else if (args[0].equalsIgnoreCase("RoutesByPavilionCoords"))//OK
 		{
 			RoutesByPavilionCoords instance = new RoutesByPavilionCoords(connection);
-			instance.get(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
+			ret = instance.get(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
+			
 		}
 		else if (args[0].equalsIgnoreCase("StationsAndPavilionsByRouteNumber")) //OK?
 		{
 			StationsAndPavilionsByRouteNumber instance = new StationsAndPavilionsByRouteNumber(connection);
 			List<Station> station = instance.get(args[1]);
 			for(Station s : station) System.out.println(s.toString());
+			ret = station;
 		}
 		/*
 		 * bugs with Troleibusas 16: Pašilaičiai - Stotis  => Pašilaiciai - Stotis
@@ -112,13 +129,13 @@ public class MainProcess {
 			PavilionsByRouteNumberAndDirection instance = new PavilionsByRouteNumberAndDirection(connection);
 			List<Station> station = instance.get(args[1]);
 			for(Station s : station) System.out.println(s.toString());
+			ret = station;
 		}
 		else HelpMain();
-	}
-	static void ExecuteOperations()
-	{
 		
+		return ret;
 	}
+	
 	
 	static void HelpMain()
 	{
@@ -150,6 +167,10 @@ public class MainProcess {
 		System.out.println("PavilionsByRouteNumberAndDirection <Route number and direction>");
 		System.out.println("-----------------------------------------------------");
 		System.out.println("Arba <args> rasykite tiesiai i ivesties laukeli.");
+		System.out.println("Noredami apsibrezti regiona, pirma iveskite uzklausa pagal ta regiona, o sekancia");
+		System.out.println("uzklausa rasykite pradedami zodeliu filter, pvz:");
+		System.out.println("PavilionsByName <StationName>");
+		System.out.println("filter PavilionsByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
 		System.out.println("-----------------------------------------------------");
 	}
 }
