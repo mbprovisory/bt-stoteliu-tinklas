@@ -2,9 +2,13 @@ package lt.baltictalents.stoteliutinklas.helper;
 import lt.baltictalents.stoteliutinklas.operations.*;
 import lt.baltictalents.stoteliutinklas.operations.PavilionsByRadius.Measurement;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
 import lt.baltictalents.stoteliutinklas.data.layer.*;
@@ -152,6 +156,22 @@ public class MainProcess {
 			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;
 		}
+		else if (args[0+s].equalsIgnoreCase("SameStationPavilionsByRange")) //TESTING
+		{
+			SameStationPavilionsByRange instance = new SameStationPavilionsByRange(connection);
+			Set<Station> station = instance.get(Integer.parseInt(args[1+s]));
+			
+			ret = new ArrayList<Station>();
+			ret.addAll(station);
+			
+			Comparator<Station> comp = (Station a, Station b) -> {
+			    return a.getName().compareTo(b.getName());
+			};
+			
+			Collections.sort(ret, comp);
+			
+			for(Station ss : ret) System.out.println(ss.toString());
+		}
 		else HelpMain();
 		
 		return ret;
@@ -186,6 +206,8 @@ public class MainProcess {
 		System.out.println("RoutesByPavilionCoords <Longitude> <Latitude>");
 		System.out.println("StationsAndPavilionsByRouteNumber <RouteNumber>");
 		System.out.println("PavilionsByRouteNumberAndDirection <Route number and direction>");
+		System.out.println("-----------------------------------------------------");
+		System.out.println("SameStationPavilionsByRange <RangeInMeters>");
 		System.out.println("-----------------------------------------------------");
 		System.out.println("Arba <args> rasykite tiesiai i ivesties laukeli.");
 		System.out.println("Noredami apsibrezti regiona, pirma iveskite uzklausa pagal ta regiona, o sekancia");

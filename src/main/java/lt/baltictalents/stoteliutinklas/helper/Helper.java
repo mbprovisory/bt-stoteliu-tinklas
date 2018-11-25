@@ -23,7 +23,7 @@ public class Helper {
 
 	public static String[] RegexParser(String args) 
 	{
-	    String re = "((?:\\\".+?\\\")|(?:\\S+))";
+	    String re = "((\".+?\")|(?:\\S+))";
 	    Pattern p = Pattern.compile(re,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	    Matcher m = p.matcher(args);
 	    List<String> sList = new ArrayList<String>();
