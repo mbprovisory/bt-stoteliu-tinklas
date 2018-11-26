@@ -69,5 +69,33 @@ public class Station {
 	    distance = Math.sqrt(distance);
 	    return distance;
 	    }
+	
+	
+	 @Override
+	    public boolean equals(Object obj) 
+	    { 
+	          
+		    // if both the object references are  
+		    // referring to the same object. 
+		    if(this == obj) return true; 
+	          
+	        if(obj == null || obj.getClass()!= this.getClass()) 
+	            return false; 
+	          
+	        // type casting of the argument.  
+	        Station station = (Station) obj; 
+	          
+	        // comparing the state of argument with  
+	        // the state of 'this' Object. 
+	        return (station.name.equals(this.name)  && 
+	        		station.latitude.equals(this.latitude) &&
+	        		station.longitude.equals(this.longitude)); 
+	    } 
+	      
+	    @Override
+	    public int hashCode() 
+	    { 
+	        return (this.name+this.latitude+this.longitude).hashCode();
+	    } 
 
 }

@@ -1,5 +1,10 @@
 package lt.baltictalents.stoteliutinklas.helper;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Helper {
 	
 	//https://en.wikipedia.org/wiki/Haversine_formula
@@ -14,5 +19,16 @@ public class Helper {
 		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		double d = R * c;
 	    return d * 1000; // meters
+	}
+
+	public static String[] RegexParser(String args) 
+	{
+	    String re = "((\".+?\")|(?:\\S+))";
+	    Pattern p = Pattern.compile(re,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+	    Matcher m = p.matcher(args);
+	    List<String> sList = new ArrayList<String>();
+	    while (m.find()) sList.add(m.group(1));
+	    String[] ret = sList.toArray(new String[0]);
+		return ret;
 	}
 }
