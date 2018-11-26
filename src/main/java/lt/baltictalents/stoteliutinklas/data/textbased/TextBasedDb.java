@@ -32,8 +32,7 @@ public class TextBasedDb {
 	try (Stream<String> lines = Files.lines(Paths.get(file), Charset.defaultCharset())) {
 	    lines.forEach(System.out::println);
 	  } catch (IOException ex) {
-	    // TODO Auto-generated catch block
-	    ex.printStackTrace();
+	    	    ex.printStackTrace();
 	}
 	return list;
     } 
@@ -43,8 +42,7 @@ public class TextBasedDb {
   	try (Stream<String> lines = Files.lines(Paths.get(file), Charset.defaultCharset())) {
   	    lines.forEach(line -> process(line, list));
   	  } catch (IOException ex) {
-  	    // TODO Auto-generated catch block
-  	    ex.printStackTrace();
+  	      	    ex.printStackTrace();
   	}
   	return list;
       }    
@@ -55,8 +53,14 @@ public class TextBasedDb {
 	line = line.replace(l,k );
 	String[] station = line.split(",");
 	String[] routes = station[3].split(";");
-	//for(String st: station) {System.out.println(st);}
-	//for(String rt: routes) {System.out.println("-------" + rt);}
+	for(String st: station) {
+	    st = st.trim();
+	    //System.out.println(st);
+	    }
+	for(String rt: routes) {
+	    rt = rt.trim();
+	    //System.out.println("-------" + rt);
+	}
 	Station st = new Station(station[0], station[1],station[2], routes);
 	list.add(st);
 	return list;
