@@ -16,11 +16,12 @@ import lt.baltictalents.stoteliutinklas.data.layer.*;
 //Paleidziam per cmd: java -cp JarFile.jar lt.baltictalents.stoteliutinklas.config.Application
 
 public class MainProcess {
-	public static void HandleArgs(String[] args)
+	public static void HandleArgs(String[] args, boolean testMode)
 	{
 		boolean bOuterCycle = true;
 		while(bOuterCycle)
 		{
+			if(testMode) bOuterCycle=false;
 			try
 			{
 				HelpMain();
@@ -56,7 +57,7 @@ public class MainProcess {
 						previousQueryResults = SelectOperations(incomingArgs, previousQueryResults);
 					}
 					
-					
+					if(testMode) bCycle = false;
 				}
 				
 			}
@@ -67,7 +68,7 @@ public class MainProcess {
 		}
 	}
 	
-	static List<Station> SelectOperations(String []args, List<Station> stationList)
+	private static List<Station> SelectOperations(String []args, List<Station> stationList)
 	{
 		List<Station> ret = new LinkedList<Station>();
 		int s; //shifter
