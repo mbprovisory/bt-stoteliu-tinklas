@@ -60,7 +60,7 @@ public class TextBasedRoutesDb {
 	   // System.out.println("  ------------------   ");
 
 	Route st = new Route(route[0],route[1],route[2]);
-	System.out.println(st);
+	//System.out.println(st);
 	list.add(st);
 	return list;
     }

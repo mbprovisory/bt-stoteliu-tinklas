@@ -10,9 +10,8 @@ public class Route {
     private String startStation;
     private String endStation;
     private String transportMean;
-   
-
     private int transportMeanConst;
+    
     public static final int TROLLEYBUS = 1;
     public static final int BUS = 2;
     public static final int EXPRESSBUS = 3;
@@ -33,9 +32,10 @@ public class Route {
 	int nb = -1;
 	Pattern pt = Pattern.compile("\\d+");
 	Matcher mt = pt.matcher(meanAndNb);
-	if(mt.find()&&mt.groupCount()<2) {
+	if(mt.find()&&mt.groupCount()<1) {
 	    nb = Integer.parseInt(mt.group());
-	}
+	    //System.out.println(" gr.count  "   +   mt.groupCount());
+	} else if(mt.groupCount()>=1) {System.out.println("Blogas eilutes formatas: " + meanAndNb);}
 	return nb;
     }
     
@@ -43,9 +43,9 @@ public class Route {
 	String mean = null;
 	Pattern pt = Pattern.compile("\\D+");
 	Matcher mt = pt.matcher(meanAndNb);
-	if(mt.find()) {
+	if(mt.find()&&mt.groupCount()<1) {
 	    mean = mt.group();
-	}
+	}else if(mt.groupCount()>=1) {System.out.println("Blogas eilutes formatas: " + meanAndNb);}
 	return mean;
     }
 
