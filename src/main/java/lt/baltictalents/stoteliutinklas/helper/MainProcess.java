@@ -16,27 +16,32 @@ import lt.baltictalents.stoteliutinklas.data.layer.*;
 //Paleidziam per cmd: java -cp JarFile.jar lt.baltictalents.stoteliutinklas.config.Application
 
 public class MainProcess {
-	public static void HandleArgs(String[] args, boolean testMode)
+	public static void HandleArgs(String[] args)
 	{
 		boolean bOuterCycle = true;
 		while(bOuterCycle)
 		{
-			if(testMode) bOuterCycle=false;
+			
 			try
 			{
-				HelpMain();
+				//HelpMain();
 				
 				List<Station> previousQueryResults = null, queryResults = null;
 				String[] incomingArgs;
 				
-				if (args.length==0 || args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
-				{
-					//HelpMain();
+				if(args.length!=0) {
+					if (args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
+					{
+						HelpMain();
+					}
+					else
+					{
+						SelectOperations(args, null);	
+						HelpMain();
+					}
 				}
-				else
-				{
-					SelectOperations(args, null);	
-				}
+				else HelpMain();
+				
 				
 				boolean bCycle = true;
 				while (bCycle)
@@ -57,7 +62,7 @@ public class MainProcess {
 						previousQueryResults = SelectOperations(incomingArgs, previousQueryResults);
 					}
 					
-					if(testMode) bCycle = false;
+					
 				}
 				
 			}
