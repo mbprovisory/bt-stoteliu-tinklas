@@ -21,21 +21,27 @@ public class MainProcess {
 		boolean bOuterCycle = true;
 		while(bOuterCycle)
 		{
+			
 			try
 			{
-				HelpMain();
+				//HelpMain();
 				
 				List<Station> previousQueryResults = null, queryResults = null;
 				String[] incomingArgs;
 				
-				if (args.length==0 || args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
-				{
-					//HelpMain();
+				if(args.length!=0) {
+					if (args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
+					{
+						HelpMain();
+					}
+					else
+					{
+						SelectOperations(args, null);	
+						HelpMain();
+					}
 				}
-				else
-				{
-					SelectOperations(args, null);	
-				}
+				else HelpMain();
+				
 				
 				boolean bCycle = true;
 				while (bCycle)
@@ -67,7 +73,7 @@ public class MainProcess {
 		}
 	}
 	
-	static List<Station> SelectOperations(String []args, List<Station> stationList)
+	private static List<Station> SelectOperations(String []args, List<Station> stationList)
 	{
 		List<Station> ret = new LinkedList<Station>();
 		int s; //shifter
