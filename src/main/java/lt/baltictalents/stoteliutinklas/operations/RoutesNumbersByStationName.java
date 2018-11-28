@@ -7,6 +7,9 @@ import lt.baltictalents.stoteliutinklas.data.beans.Station;
 import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
 import lt.baltictalents.stoteliutinklas.operations.PavilionsByName;
 
+/*6)	Įvedus stotelės pavadinimą, grąžinti kokie maršrutai stoja stotelėje.
+ * 
+ */
 public class RoutesNumbersByStationName {
 
 	private DataListFactory connection;
