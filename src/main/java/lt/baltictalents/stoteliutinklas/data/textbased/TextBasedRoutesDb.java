@@ -28,17 +28,24 @@ public class TextBasedRoutesDb {
 	this.uriString = uriString;
     }
 
-    public List<Route> createDb1(){
-	List<Route> list = new ArrayList<Route>(2000);
+    public List<Route> createDb(){
+	List<Route> list = new ArrayList<Route>();
 	try (Stream<String> lines = Files.lines(Paths.get(file), Charset.defaultCharset())) {
-	    lines.forEach(System.out::println);
+	    lines.forEach(line -> process1(line, list));
 	} catch (IOException ex) {
 	    ex.printStackTrace();
 	}
 	return list;
     } 
 
-    public List<Route> createDb(){
+    
+    
+    private Object process1(String line, List<Route> list) {
+	list.add(new Route().getNew(line));
+	return list;
+    }
+/*
+    public List<Route> createDb2(){
 	List<Route> list = new ArrayList<Route>();
 	try (Stream<String> lines = Files.lines(Paths.get(file), Charset.defaultCharset())) {
 	    lines.forEach(line -> process(line, list));
@@ -63,7 +70,7 @@ public class TextBasedRoutesDb {
 	//System.out.println(st);
 	list.add(st);
 	return list;
-    }
+    }*/
 
     private URI getURI(String string) {
 	URI uri = null;

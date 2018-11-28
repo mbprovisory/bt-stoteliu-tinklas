@@ -3,7 +3,7 @@ package lt.baltictalents.stoteliutinklas.data.beans;
 import java.util.regex.Matcher;
 import  java.util.regex.Pattern;
 
-public class Route {
+public class Route implements Creatable {
 
     private String routeMeanAndNb;
     private int routeNb;
@@ -17,6 +17,8 @@ public class Route {
     public static final int EXPRESSBUS = 3;
     private static final int OTHER = 0;
     
+    public Route() {}
+    
     public Route(String routeMeanAndNb, String startStation, String endStation) {
 	this.routeMeanAndNb = routeMeanAndNb;
 	this.startStation = startStation;
@@ -26,6 +28,20 @@ public class Route {
 	this.routeNb = setNb(routeMeanAndNb);
 	this.transportMean = setMeanString(routeMeanAndNb);
     }
+    
+    
+    public Route getNew(String line) {
+	char l = '"';
+	char k = ' ';
+	line = line.replace(l,k );
+	String[] route = line.split(",");
+	for(String st: route) {
+	    st = st.trim();
+	    System.out.print(st + "   ++   ");
+	}
+	    System.out.println("  ------------------   ");
+	return new Route(route[0],route[1],route[2]);
+	    }
     
     
     private int setNb(String meanAndNb) {

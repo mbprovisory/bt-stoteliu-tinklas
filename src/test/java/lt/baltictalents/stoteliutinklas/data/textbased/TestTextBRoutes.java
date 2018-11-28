@@ -6,10 +6,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Route;
+import lt.baltictalents.stoteliutinklas.data.layer.RoutesListFactory;
 
 public class TestTextBRoutes {
 
-    TextBasedRoutesDb routes = new TextBasedRoutesDb();
+    RoutesListFactory routes = new RoutesListFactory();
     
     @Before
     public void setUp() throws Exception {
