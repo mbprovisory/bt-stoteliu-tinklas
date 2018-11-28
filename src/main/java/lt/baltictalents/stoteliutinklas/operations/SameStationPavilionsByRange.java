@@ -35,27 +35,25 @@ public class SameStationPavilionsByRange
 		for(Station s : stations)
 		{
 			currName = s.getName();
+			target = pbn.get(currName);
 			
-				checked.add(currName);
-				target = pbn.get(currName);
-				
-				for(int i=0; i < target.size(); i++)
+			for(int i=0; i < target.size(); i++)
+			{
+				for(int j=i+1; j < target.size(); j++)
 				{
-					for(int j=i+1; j < target.size(); j++)
+					double d1 = Double.parseDouble(target.get(i).getLatitude());
+					double d2 = Double.parseDouble(target.get(i).getLongitude());
+					double d3 = Double.parseDouble(target.get(j).getLatitude());
+					double d4 = Double.parseDouble(target.get(j).getLongitude());
+					
+					if (Helper.getDistanceBetweenTwoPointsInMeters(d1,d2,d3,d4)<=range)
 					{
-						double d1 = Double.parseDouble(target.get(i).getLatitude());
-						double d2 = Double.parseDouble(target.get(i).getLongitude());
-						double d3 = Double.parseDouble(target.get(j).getLatitude());
-						double d4 = Double.parseDouble(target.get(j).getLongitude());
-						
-						if (Helper.getDistanceBetweenTwoPointsInMeters(d1,d2,d3,d4)<=range)
-						{
-							ret.add(target.get(i));
-							ret.add(target.get(j));
-						}
-						
+						ret.add(target.get(i));
+						ret.add(target.get(j));
 					}
+					
 				}
+			}
 				
 			
 		}

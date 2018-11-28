@@ -1,6 +1,6 @@
 package lt.baltictalents.stoteliutinklas.data.beans;
 
-public class Station {
+public class Station implements Creatable {
 	String name;
 	String longitude;
 	String latitude;
@@ -13,6 +13,14 @@ public class Station {
 		this.latitude = lat;
 		this.routes = routes;
 	}
+	
+	
+
+	public Station() {
+	    // TODO Auto-generated constructor stub
+	}
+
+
 
 	public String getName() {
 		return name;
@@ -96,6 +104,26 @@ public class Station {
 	    public int hashCode() 
 	    { 
 	        return (this.name+this.latitude+this.longitude).hashCode();
+	    }
+
+
+
+	    @Override
+	    public Station getNew(String line) {
+		char l = '"';
+		char k = ' ';
+		line = line.replace(l,k );
+		String[] station = line.split(",");
+		String[] routes = station[3].split(";");
+		for(String st: station) {
+		    st = st.trim();
+		    //System.out.println(st);
+		    }
+		for(String rt: routes) {
+		    rt = rt.trim();
+		    //System.out.println("-------" + rt);
+		}
+		return  new Station(station[0], station[1],station[2], routes);
 	    } 
 
 }

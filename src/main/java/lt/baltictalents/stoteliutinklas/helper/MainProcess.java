@@ -21,21 +21,27 @@ public class MainProcess {
 		boolean bOuterCycle = true;
 		while(bOuterCycle)
 		{
+			
 			try
 			{
-				HelpMain();
+				//HelpMain();
 				
 				List<Station> previousQueryResults = null, queryResults = null;
 				String[] incomingArgs;
 				
-				if (args.length==0 || args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
-				{
-					//HelpMain();
+				if(args.length!=0) {
+					if (args[0].toLowerCase().equals("help") || args[0].toLowerCase().equals("?"))
+					{
+						HelpMain();
+					}
+					else
+					{
+						SelectOperations(args, null);	
+						HelpMain();
+					}
 				}
-				else
-				{
-					SelectOperations(args, null);	
-				}
+				else HelpMain();
+				
 				
 				boolean bCycle = true;
 				while (bCycle)
@@ -67,7 +73,7 @@ public class MainProcess {
 		}
 	}
 	
-	static List<Station> SelectOperations(String []args, List<Station> stationList)
+	private static List<Station> SelectOperations(String []args, List<Station> stationList)
 	{
 		List<Station> ret = new LinkedList<Station>();
 		int s; //shifter
@@ -172,6 +178,13 @@ public class MainProcess {
 			
 			for(Station ss : ret) System.out.println(ss.toString());
 		}
+		else if (args[0+s].equalsIgnoreCase("SameStationsByMoreRoutes")) //BUGS
+		{
+			SameStationsByMoreRoutes instance = new SameStationsByMoreRoutes(connection);
+			List<Station> station = instance.findMoreRoutes(Integer.parseInt(args[1+s]));
+			for(Station ss : station) System.out.println(ss.toString());
+			ret = station;
+		}
 		else HelpMain();
 		
 		return ret;
@@ -197,17 +210,20 @@ public class MainProcess {
 	
 	static void HelpCommandsList()
 	{
-		System.out.println("PavilionsByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
-		System.out.println("NearestPavilionByCoords <Longitude> <Latitude>");
-		System.out.println("BusiestPavilionByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
-		System.out.println("PavilionsByName <StationName>");
-		System.out.println("PavilionsByRadius <Longitude> <Latitude> <angle/meters> angle/meters");
-		System.out.println("RoutesByStationName <StationName>");
-		System.out.println("RoutesByPavilionCoords <Longitude> <Latitude>");
-		System.out.println("StationsAndPavilionsByRouteNumber <RouteNumber>");
-		System.out.println("PavilionsByRouteNumberAndDirection <Route number and direction>");
-		System.out.println("-----------------------------------------------------");
-		System.out.println("SameStationPavilionsByRange <RangeInMeters>");
+		System.out.println("---------------------SPRINT 1--------------------------------");
+		System.out.println("1. PavilionsByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
+		System.out.println("2. NearestPavilionByCoords <Longitude> <Latitude>");
+		System.out.println("3. BusiestPavilionByRectangle <Longitude0> <Latitude0> <Longitude1> <Latitude1>");
+		System.out.println("4. PavilionsByName <StationName>");
+		System.out.println("5. PavilionsByRadius <Longitude> <Latitude> <angle/meters> angle/meters");
+		System.out.println("6. RoutesByStationName <StationName>");
+		System.out.println("7. RoutesByPavilionCoords <Longitude> <Latitude>");
+		System.out.println("8. StationsAndPavilionsByRouteNumber <RouteNumber>");
+		System.out.println("9. PavilionsByRouteNumberAndDirection <Route number and direction>");
+		System.out.println("---------------------SPRINT 2--------------------------------");
+		System.out.println("5. Genadijaus");
+		System.out.println("6. SameStationPavilionsByRange <RangeInMeters>");
+		System.out.println("7. SameStationsByMoreRoutes <PavilionsSize>");
 		System.out.println("-----------------------------------------------------");
 		System.out.println("Arba <args> rasykite tiesiai i ivesties laukeli.");
 		System.out.println("Noredami apsibrezti regiona, pirma iveskite uzklausa pagal ta regiona, o sekancia");

@@ -8,12 +8,14 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
+
 /**
  * @author rimantas
  *
  */
 public class TestTextBasedDb {
-    TextBasedDb txtdb;
+    public DataListFactory connection = new DataListFactory();
     /**
      * @throws java.lang.Exception
      */
@@ -24,7 +26,8 @@ public class TestTextBasedDb {
 
     @Test
     public void test() {
-	assertEquals(3, new TextBasedDb().createDb().size());
+	connection.setConnectionType(DataListFactory.TEXTBASEDDB);
+	assertEquals(3, connection.getStoteles().size());
     }
 
 }
