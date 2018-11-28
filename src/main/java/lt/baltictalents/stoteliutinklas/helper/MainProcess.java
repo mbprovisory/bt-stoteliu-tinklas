@@ -178,12 +178,19 @@ public class MainProcess {
 			
 			for(Station ss : ret) System.out.println(ss.toString());
 		}
-		else if (args[0+s].equalsIgnoreCase("SameStationsByMoreRoutes")) //BUGS
+		else if (args[0+s].equalsIgnoreCase("SameStationsByMoreRoutes")) 
 		{
 			SameStationsByMoreRoutes instance = new SameStationsByMoreRoutes(connection);
 			List<Station> station = instance.findMoreRoutes(Integer.parseInt(args[1+s]));
 			for(Station ss : station) System.out.println(ss.toString());
 			ret = station;
+		}
+		else if (args[0+s].equalsIgnoreCase("SameStationsByCrossingRoutes")) 
+		{
+			SameStationsByCrossingRoutes instance = new SameStationsByCrossingRoutes(connection);
+			List<String> station = instance.get(args[1+s], args[2+s]);
+			for(String ss : station) System.out.println(ss);
+			//ret = station;
 		}
 		else HelpMain();
 		
@@ -221,7 +228,7 @@ public class MainProcess {
 		System.out.println("8. StationsAndPavilionsByRouteNumber <RouteNumber>");
 		System.out.println("9. PavilionsByRouteNumberAndDirection <Route number and direction>");
 		System.out.println("---------------------SPRINT 2--------------------------------");
-		System.out.println("5. Genadijaus");
+		System.out.println("5. SameStationsByCrossingRoutes <Route1> <Route2>");
 		System.out.println("6. SameStationPavilionsByRange <RangeInMeters>");
 		System.out.println("7. SameStationsByMoreRoutes <PavilionsSize>");
 		System.out.println("-----------------------------------------------------");

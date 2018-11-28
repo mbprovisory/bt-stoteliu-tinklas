@@ -27,7 +27,13 @@ public class Helper {
 	    Pattern p = Pattern.compile(re,Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
 	    Matcher m = p.matcher(args);
 	    List<String> sList = new ArrayList<String>();
-	    while (m.find()) sList.add(m.group(1));
+	    while (m.find())
+	    {
+	    	String string = m.group(1);
+	    	string = string.replace("\"", "");
+	    	sList.add(string);
+	    	
+	    }
 	    String[] ret = sList.toArray(new String[0]);
 		return ret;
 	}
