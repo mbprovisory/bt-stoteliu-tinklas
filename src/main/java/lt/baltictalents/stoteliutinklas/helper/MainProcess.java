@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
+import lt.baltictalents.stoteliutinklas.data.database.DatabaseOperationsMangirdas;
 import lt.baltictalents.stoteliutinklas.data.layer.*;
 //Susikuriam .jar faila per file>export
 //Paleidziam per cmd: java -cp JarFile.jar lt.baltictalents.stoteliutinklas.config.Application
@@ -192,6 +193,16 @@ public class MainProcess {
 			for(String ss : station) System.out.println(ss);
 			//ret = station;
 		}
+		
+		//CALL AREA RESPONSIBLE FOR DB TESTING
+		else if (args[0+s].equalsIgnoreCase("read")) 
+		{
+			SameStationsByCrossingRoutes instance = new SameStationsByCrossingRoutes(connection);
+			DatabaseOperationsMangirdas.read("");
+			ret = null;
+		}
+		//END CALL AREA RESPONSIBLE FOR DB TESTING
+		
 		else HelpMain();
 		
 		return ret;
