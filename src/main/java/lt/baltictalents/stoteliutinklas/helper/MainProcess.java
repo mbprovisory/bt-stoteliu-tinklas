@@ -201,6 +201,12 @@ public class MainProcess {
 			DatabaseOperationsMangirdas.read("");
 			ret = null;
 		}
+		else if (args[0+s].equalsIgnoreCase("create")) 
+		{
+			SameStationsByCrossingRoutes instance = new SameStationsByCrossingRoutes(connection);
+			DatabaseOperationsMangirdas.create("");
+			ret = null;
+		}
 		//END CALL AREA RESPONSIBLE FOR DB TESTING
 		
 		else HelpMain();
