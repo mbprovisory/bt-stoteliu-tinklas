@@ -197,17 +197,20 @@ public class MainProcess {
 		//CALL AREA RESPONSIBLE FOR DB TESTING
 		else if (args[0+s].equalsIgnoreCase("read")) 
 		{
-			SameStationsByCrossingRoutes instance = new SameStationsByCrossingRoutes(connection);
 			DatabaseOperationsMangirdas.read("");
 			ret = null;
 		}
 		else if (args[0+s].equalsIgnoreCase("create")) 
 		{
-			SameStationsByCrossingRoutes instance = new SameStationsByCrossingRoutes(connection);
 			DatabaseOperationsMangirdas.create("");
 			ret = null;
 		}
-		//END CALL AREA RESPONSIBLE FOR DB TESTING
+		else if (args[0+s].equalsIgnoreCase("sci")) //Stations create & insert from list
+		{
+			DatabaseOperationsMangirdas.getStotelesTextToDatabaseTable(connection);
+			ret = null;
+		}
+		//END CALL AREA RESPONSIBLE FOR DB TESTING getStotelesTextToDatabaseTable
 		
 		else HelpMain();
 		

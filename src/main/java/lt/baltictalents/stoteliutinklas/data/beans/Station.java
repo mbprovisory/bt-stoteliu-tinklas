@@ -1,10 +1,13 @@
 package lt.baltictalents.stoteliutinklas.data.beans;
 
+import java.util.Date;
+
 public class Station implements Creatable {
 	String name;
 	String longitude;
 	String latitude;
 	String[] routes;
+	Date lastMaintenance = null;
 
 	public Station(String name, String lon, String lat, String[] routes) {
 		super();
