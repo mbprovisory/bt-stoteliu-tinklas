@@ -7,7 +7,7 @@ public class Station implements Creatable {
 	String longitude;
 	String latitude;
 	String[] routes;
-	Date lastMaintenance = null;
+	Date date = null;
 
 	public Station(String name, String lon, String lat, String[] routes) {
 		super();
@@ -15,6 +15,11 @@ public class Station implements Creatable {
 		this.longitude = lon;
 		this.latitude = lat;
 		this.routes = routes;
+	}
+	public Station(String name, String lon, String lat, String[] routes, Date date) {
+		this(name, lon, lat, routes);
+		this.date = date;
+		
 	}
 	
 	

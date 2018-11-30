@@ -6,6 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
@@ -13,6 +18,9 @@ import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
 
 public class DatabaseOperationsMangirdas 
 {
+	/* gal tiks Genadijaus uzduociai:
+     *  SELECT * FROM statistics WHERE date BETWEEN datetime('now', localtime') AND datetime ( 'now', '-1 month')
+     */
 	static protected String url = "jdbc:sqlite:C:\\sqlitedbs\\StoteliuTinklas.db";
 	
 	 /**
@@ -31,9 +39,77 @@ public class DatabaseOperationsMangirdas
         return conn;
     }
 	
-	/*
-	 * Creates and populates Stations table
-	 */
+    /*
+     * date as YYYY-MM-DD
+     */
+    public static void setPavilionDate(int id, String date) 
+    {
+    	String sql = "UPDATE Stations SET date = ?"
+                + " WHERE id = ?";
+    	
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+ 
+            // set the corresponding param
+        	pstmt.setString(1, date);
+            pstmt.setInt(2, id);
+            
+            // update 
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    /*
+     * Sets date at id record to current date (now)
+     */
+    public static void touchPavilionDate(int id)
+    {
+    	
+    }
+
+
+/*
+ * Database table Stoteles to connection's getList
+ */
+    public static void StationsDatabaseTableTogetStotelesList(DataListFactory connection)
+    {
+    	 String sql = "SELECT name, longitude, latitude, date FROM Stations";
+         List<Station> ret = new LinkedList<Station>();
+         Date neededDate=null;
+         
+         try (Connection conn = connect();
+              Statement stmt  = conn.createStatement();
+              ResultSet rs    = stmt.executeQuery(sql)){
+             
+             // loop through the result set
+             while (rs.next()) 
+             {
+            	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            	 try {
+            	     neededDate = df.parse(rs.getString("date"));
+            	 } catch (ParseException e) {
+            	    e.printStackTrace();
+            	 } catch (NullPointerException e)
+            	 {
+            		 neededDate = null;
+            	 }
+            	 
+                 ret.add(
+                		 new Station(rs.getString("name"),
+                				 rs.getString("longitude"),
+                				 rs.getString("latitude"),
+                				 null,
+                				 neededDate
+                				 )
+                		 );
+             }
+         } catch (SQLException e) {
+             System.out.println(e.getMessage());
+         }
+         connection.SetStoteles(ret);
+    }
+    
 	public static void getStotelesTextToDatabaseTable(DataListFactory connection) 
 	{
 		List<Station> stations = connection.getStoteles();
@@ -44,7 +120,7 @@ public class DatabaseOperationsMangirdas
                 + "	name text NOT NULL,\n"
                 + "	longitude text NOT NULL,\n"
                 + "	latitude text NOT NULL,\n"
-                + "	date text\n"//TEXT as ISO8601 strings ("YYYY-MM-DD HH:MM:SS.SSS")
+                + "	date DATE\n"//TEXT as ISO8601 strings ("YYYY-MM-DD HH:MM:SS.SSS")
                 + " );";
         
         try (Connection conn = DriverManager.getConnection(url);

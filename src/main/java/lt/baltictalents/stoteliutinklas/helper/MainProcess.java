@@ -210,6 +210,19 @@ public class MainProcess {
 			DatabaseOperationsMangirdas.getStotelesTextToDatabaseTable(connection);
 			ret = null;
 		}
+		else if (args[0+s].equalsIgnoreCase("spd")) //Stations set (or update) pavilion date
+		{
+			DatabaseOperationsMangirdas.setPavilionDate(Integer.parseInt(args[1+s]), args[2+s]);
+			
+			ret = null;
+		}
+		//
+		else if (args[0+s].equalsIgnoreCase("sts")) //StationsDatabaseTableTogetStotelesList
+		{
+			DatabaseOperationsMangirdas.StationsDatabaseTableTogetStotelesList(connection);
+			
+			ret = null;
+		}
 		//END CALL AREA RESPONSIBLE FOR DB TESTING getStotelesTextToDatabaseTable
 		
 		else HelpMain();
