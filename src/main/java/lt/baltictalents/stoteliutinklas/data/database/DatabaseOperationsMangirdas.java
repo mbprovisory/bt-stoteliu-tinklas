@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -65,7 +67,11 @@ public class DatabaseOperationsMangirdas
      */
     public static void touchPavilionDate(int id)
     {
+    	DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    	LocalDate now = LocalDate.now();
+    	String date = df.format(now);
     	
+    	setPavilionDate(id, date);
     }
 
 

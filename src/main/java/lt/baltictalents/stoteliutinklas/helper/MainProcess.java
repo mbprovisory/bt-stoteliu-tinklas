@@ -223,6 +223,12 @@ public class MainProcess {
 			
 			ret = null;
 		}
+		else if (args[0+s].equalsIgnoreCase("tpd")) //touchPavilionDate
+		{
+			DatabaseOperationsMangirdas.touchPavilionDate(Integer.parseInt(args[1+s]));
+			
+			ret = null;
+		}
 		//END CALL AREA RESPONSIBLE FOR DB TESTING getStotelesTextToDatabaseTable
 		
 		else HelpMain();
