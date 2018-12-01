@@ -195,16 +195,6 @@ public class MainProcess {
 		}
 		
 		//CALL AREA RESPONSIBLE FOR DB TESTING
-		else if (args[0+s].equalsIgnoreCase("read")) 
-		{
-			DatabaseOperationsMangirdas.read("");
-			ret = null;
-		}
-		else if (args[0+s].equalsIgnoreCase("create")) 
-		{
-			DatabaseOperationsMangirdas.create("");
-			ret = null;
-		}
 		else if (args[0+s].equalsIgnoreCase("sci")) //Stations create & insert from list
 		{
 			DatabaseOperationsMangirdas.getStotelesTextToDatabaseTable(connection);
@@ -228,6 +218,12 @@ public class MainProcess {
 			DatabaseOperationsMangirdas.touchPavilionDate(Integer.parseInt(args[1+s]));
 			
 			ret = null;
+		}
+		else if (args[0+s].equalsIgnoreCase("gpod")) //getPavilionsByOldestDate
+		{
+			ret = DatabaseOperationsMangirdas.getPavilionsByOldestDate();
+			
+			
 		}
 		//END CALL AREA RESPONSIBLE FOR DB TESTING getStotelesTextToDatabaseTable
 		

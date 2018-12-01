@@ -23,10 +23,12 @@ public class DatabaseOperationsMangirdas
 	/* gal tiks Genadijaus uzduociai:
      *  SELECT * FROM statistics WHERE date BETWEEN datetime('now', localtime') AND datetime ( 'now', '-1 month')
      */
+	
+	
 	static protected String url = "jdbc:sqlite:C:\\sqlitedbs\\StoteliuTinklas.db";
 	
 	 /**
-     * Connect to the test.db database
+     * Connect to the url database
      *
      * @return the Connection object
      */
@@ -40,9 +42,59 @@ public class DatabaseOperationsMangirdas
         }
         return conn;
     }
+    
+    /*
+     * Gets stations from the database Stations record and returns List<Stations> by oldest to newest pavilions
+     */
+	public static List<Station> getPavilionsByOldestDate()
+	{
+		List<Station> ret = new LinkedList<Station>();
+		
+		//---
+		 String sql = "SELECT name, longitude, latitude, date FROM Stations ORDER BY date";
+		 Date neededDate = null;
+         
+         try (Connection conn = connect();
+              Statement stmt  = conn.createStatement();
+              ResultSet rs    = stmt.executeQuery(sql)){
+             
+             // loop through the result set
+             while (rs.next()) 
+             {
+            	 
+            	 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            	 try 
+            	 {
+            		 if( rs.getString("date") == null) neededDate = null;
+            		 else neededDate = df.parse(rs.getString("date"));
+            	 }
+            	 catch (ParseException e)
+            	 {
+            		 System.out.println(e.getMessage());
+            	 }
+            	 
+                 ret.add(
+                		 new Station(rs.getString("name"),
+                				 rs.getString("longitude"),
+                				 rs.getString("latitude"),
+                				 null,
+                				 neededDate
+                				 )
+                		 );
+             }
+         } catch (SQLException e) {
+             System.out.println(e.getMessage());
+         }
+         
+		//---
+		
+		
+		return ret;
+	}
 	
     /*
      * date as YYYY-MM-DD
+     * Sets a date of the pavilion in Stations db table
      */
     public static void setPavilionDate(int id, String date) 
     {
@@ -63,7 +115,7 @@ public class DatabaseOperationsMangirdas
         }
     }
     /*
-     * Sets date at id record to current date (now)
+     * Sets date at id record to current date (now) in Sttions db table
      */
     public static void touchPavilionDate(int id)
     {
@@ -75,9 +127,9 @@ public class DatabaseOperationsMangirdas
     }
 
 
-/*
- * Database table Stoteles to connection's getList
- */
+	/*
+	 * Database table Stoteles to connection's getList
+	 */
     public static void StationsDatabaseTableTogetStotelesList(DataListFactory connection)
     {
     	 String sql = "SELECT name, longitude, latitude, date FROM Stations";
@@ -116,135 +168,107 @@ public class DatabaseOperationsMangirdas
          connection.SetStoteles(ret);
     }
     
+    /*
+     * From getStoteles list to Database table Stoteles (adds anew if not created/ nothing if table created)
+     */
 	public static void getStotelesTextToDatabaseTable(DataListFactory connection) 
 	{
-		List<Station> stations = connection.getStoteles();
-		//CREATION
-		// SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS Stations (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	name text NOT NULL,\n"
-                + "	longitude text NOT NULL,\n"
-                + "	latitude text NOT NULL,\n"
-                + "	date DATE\n"//TEXT as ISO8601 strings ("YYYY-MM-DD HH:MM:SS.SSS")
-                + " );";
-        
-        try (Connection conn = DriverManager.getConnection(url);
-                Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        
-        //INSERTION
-        sql = "INSERT INTO Stations(name, longitude, latitude, date) VALUES(?,?,?,?)";
-        
-        Connection conn=null;
-        PreparedStatement pstmt=null;
-        
-        try{
-        	
-        	conn = connect();
-        	pstmt = conn.prepareStatement(sql);
-        	
-        	if(conn == null) return;
-        	conn.setAutoCommit(false);
-        	
-        	for(Station s : stations)
-        	{
-	        	pstmt.setString(1, s.getName());
-	            pstmt.setString(2, s.getLongitude());
-	            pstmt.setString(3, s.getLatitude());
-	            pstmt.setString(4, null); 
-	            pstmt.executeUpdate();
-        	}
-            
-            conn.commit();
-        } catch (SQLException e1) {
-            try {
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException e2) {
-                System.out.println(e2.getMessage());
-            }
-            System.out.println(e1.getMessage());
-        } finally {
-            try {
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e3) {
-                System.out.println(e3.getMessage());
-            }
-        }
-        
+		try(Connection conn = DriverManager.getConnection(url))
+		{
+			try {
+				
+				Statement stmt = conn.createStatement();
+				ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as rowcount from Stations");
+		
+			    // checking if table exists and has rows
+			    if (rs.next() == true) {
+			    	if(rs.getInt("rowcount") != 0)
+			      return;
+			    }
+			}
+			catch (Exception e)
+			{
+				
+			}
+			
+			List<Station> stations = connection.getStoteles();
+			//CREATION
+			// SQL statement for creating a new table
+	        String sql = "CREATE TABLE IF NOT EXISTS Stations (\n"
+	                + "	id integer PRIMARY KEY,\n"
+	                + "	name text NOT NULL,\n"
+	                + "	longitude text NOT NULL,\n"
+	                + "	latitude text NOT NULL,\n"
+	                + "	date DATE\n"//TEXT as ISO8601 strings ("YYYY-MM-DD HH:MM:SS.SSS")
+	                + " );";
+	        
+	        try (
+	                Statement stmt = conn.createStatement()) {
+	            // create a new table
+	            stmt.execute(sql);
+	        } catch (SQLException e) {
+	            System.out.println(e.getMessage());
+	        }
+	        
+	        //INSERTION
+	        sql = "INSERT INTO Stations(name, longitude, latitude, date) VALUES(?,?,?,?)";
+	        
+	        //conn=null;
+	        PreparedStatement pstmt=null;
+	        
+	        try{
+	        	
+	        	//conn = connect();
+	        	pstmt = conn.prepareStatement(sql);
+	        	
+	        	if(conn == null) return;
+	        	conn.setAutoCommit(false);
+	        	
+	        	for(Station s : stations)
+	        	{
+		        	pstmt.setString(1, s.getName());
+		            pstmt.setString(2, s.getLongitude());
+		            pstmt.setString(3, s.getLatitude());
+		            pstmt.setString(4, null); 
+		            pstmt.executeUpdate();
+	        	}
+	            
+	            conn.commit();
+	        } catch (SQLException e1) {
+	            try {
+	                if (conn != null) {
+	                    conn.rollback();
+	                }
+	            } catch (SQLException e2) {
+	                System.out.println(e2.getMessage());
+	            }
+	            System.out.println(e1.getMessage());
+	        } finally {
+	            try {
+	                if (pstmt != null) pstmt.close();
+	                if (conn != null) conn.close();
+	            } catch (SQLException e3) {
+	                System.out.println(e3.getMessage());
+	            }
+	        }
+		}
+		catch(Exception e){}
+		finally
+		{
+			
+		}
 		
 	}
 	
 	/* TODO
 	 * Creates and populates Stations_Routes table pointing to Stations:id and Routes:id
 	 */
-	public static void StationsAndRoutesDbTablesToStations_Routes(DataListFactory connection) 
+	public static void CreateAndInsertStations_RoutesTable(DataListFactory connection) 
 	{
 		
 	}
 	
 	
-	
-	
-	
-	
-	public static void create(String... args)
-	{
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS Stations (\n"
-              //  + "	id integer PRIMARY KEY,\n"
-                + "	pavadinimas text NOT NULL\n"
-              //  + "	capacity real\n"
-                + " );";
-        
-        try (Connection conn = DriverManager.getConnection(url);
-                Statement stmt = conn.createStatement()) {
-            // create a new table
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-	}
-	
-	public static void read(String... args) 
-	{
-        Connection conn = null;
-        try {
-           
-            // create a connection to the database
-            conn = DriverManager.getConnection(url);
-            
-            String sql = "SELECT rowid, pavadinimas FROM stoteles";
-            
-            Statement stmt  = conn.createStatement();
-            ResultSet rs    = stmt.executeQuery(sql);
-           
-           // loop through the result set
-           while (rs.next()) {
-               System.out.println(rs.getString("pavadinimas"));
-           }
-            
-            System.out.println("Connection to SQLite has been established.");
-            
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
-	}
 	
 }
 
