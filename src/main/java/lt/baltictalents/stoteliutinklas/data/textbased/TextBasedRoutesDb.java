@@ -1,5 +1,6 @@
 package lt.baltictalents.stoteliutinklas.data.textbased;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,8 +16,13 @@ import lt.baltictalents.stoteliutinklas.data.beans.Route;
 
 public class TextBasedRoutesDb {
     private List<Route>  routes;
-    private String uriString = "file:///home/rimantas/autobusai.txt";
-    public URI file = getURI(uriString) ;
+    //private String uriString = "file:///home/rimantas/autobusai.txt";
+    
+    private String uriString = "file:C:/autobusai.txt";
+    File f = new File("C:\\autobusai.txt");
+    URI u = f.toURI();
+    public URI file = u;
+    //public URI file = getURI(uriString) ;
 
 
 

@@ -11,7 +11,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
-import lt.baltictalents.stoteliutinklas.data.database.DatabaseOperationsMangirdas;
+import lt.baltictalents.stoteliutinklas.data.database.DatabaseOperations;
 import lt.baltictalents.stoteliutinklas.data.layer.*;
 //Susikuriam .jar faila per file>export
 //Paleidziam per cmd: java -cp JarFile.jar lt.baltictalents.stoteliutinklas.config.Application
@@ -79,6 +79,8 @@ public class MainProcess {
 		List<Station> ret = new LinkedList<Station>();
 		int s; //shifter
 		DataListFactory connection = new DataListFactory();
+		RoutesListFactory routesConnection = new RoutesListFactory();
+		
 		if(args[0].toLowerCase().equals("filter")) 
 		{ 
 			connection.SetStoteles(stationList);
@@ -195,33 +197,33 @@ public class MainProcess {
 		}
 		
 		//CALL AREA RESPONSIBLE FOR DB TESTING
-		else if (args[0+s].equalsIgnoreCase("sci")) //Stations create & insert from list
+		else if (args[0+s].equalsIgnoreCase("init")) //Create Stations & Routes tables & insert from list
 		{
-			DatabaseOperationsMangirdas.getStotelesTextToDatabaseTable(connection);
+			DatabaseOperations.initializeDatabase(connection, routesConnection);
 			ret = null;
 		}
 		else if (args[0+s].equalsIgnoreCase("spd")) //Stations set (or update) pavilion date
 		{
-			DatabaseOperationsMangirdas.setPavilionDate(Integer.parseInt(args[1+s]), args[2+s]);
+			DatabaseOperations.setPavilionDate(Integer.parseInt(args[1+s]), args[2+s]);
 			
 			ret = null;
 		}
 		//
 		else if (args[0+s].equalsIgnoreCase("sts")) //StationsDatabaseTableTogetStotelesList
 		{
-			DatabaseOperationsMangirdas.StationsDatabaseTableTogetStotelesList(connection);
+			DatabaseOperations.StationsDatabaseTableTogetStotelesList(connection);
 			
 			ret = null;
 		}
 		else if (args[0+s].equalsIgnoreCase("tpd")) //touchPavilionDate
 		{
-			DatabaseOperationsMangirdas.touchPavilionDate(Integer.parseInt(args[1+s]));
+			DatabaseOperations.touchPavilionDate(Integer.parseInt(args[1+s]));
 			
 			ret = null;
 		}
 		else if (args[0+s].equalsIgnoreCase("gpod")) //getPavilionsByOldestDate
 		{
-			ret = DatabaseOperationsMangirdas.getPavilionsByOldestDate();
+			ret = DatabaseOperations.getPavilionsByOldestDate();
 			
 			
 		}
