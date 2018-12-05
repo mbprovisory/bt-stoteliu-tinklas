@@ -20,7 +20,7 @@ import lt.baltictalents.stoteliutinklas.operations.PavilionsByRouteNumberAndDire
 import lt.baltictalents.stoteliutinklas.operations.SameStationPavilionsByRange;
 
 public class MangirdasTests {
-	
+	//
 	Application application;
 	MainProcess mainProcess;
 	
