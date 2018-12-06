@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
-import lt.baltictalents.stoteliutinklas.data.database.DatabaseOperationsMangirdas;
+import lt.baltictalents.stoteliutinklas.data.database.DatabaseOperations;
 
 /* sprint 3 7)	Galimybė gauti sąrašą per ilgai neatnaujintų paviljonų sąrašą:
  *	a.	Vartotojas gali įvesti limitą (pvz. 30D reikštų 30 dienų arba 1M reikštų vieną mėnesį)
@@ -27,7 +27,7 @@ public class PavilionsByServiceTime {
 		LocalDate segment = dabar.minusDays(d);       // last service date
 		
 		List<Station> data1 = 
-				DatabaseOperationsMangirdas.getPavilionsByOldestDate();
+				DatabaseOperations.getPavilionsByOldestDate();
 		
 		List<Station> oldest = new LinkedList<Station>();
 		for(Station old: data1) {
