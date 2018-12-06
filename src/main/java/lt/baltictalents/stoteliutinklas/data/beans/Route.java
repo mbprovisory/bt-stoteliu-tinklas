@@ -37,9 +37,9 @@ public class Route implements Creatable {
 	String[] route = line.split(",");
 	for(String st: route) {
 	    st = st.trim();
-	    System.out.print(st + "   ++   ");
+	    //System.out.print(st + "   ++   ");
 	}
-	    System.out.println("  ------------------   ");
+	    //System.out.println("  ------------------   ");
 	return new Route(route[0],route[1],route[2]);
 	    }
     

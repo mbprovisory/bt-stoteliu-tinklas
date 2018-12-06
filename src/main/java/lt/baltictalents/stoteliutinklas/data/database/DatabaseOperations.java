@@ -15,10 +15,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import lt.baltictalents.stoteliutinklas.data.beans.Route;
 import lt.baltictalents.stoteliutinklas.data.beans.Station;
 import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
+import lt.baltictalents.stoteliutinklas.data.layer.RoutesListFactory;
 
-public class DatabaseOperationsMangirdas 
+public class DatabaseOperations 
 {
 	/* gal tiks Genadijaus uzduociai:
      *  SELECT * FROM statistics WHERE date BETWEEN datetime('now', localtime') AND datetime ( 'now', '-1 month')
@@ -86,9 +88,6 @@ public class DatabaseOperationsMangirdas
              System.out.println(e.getMessage());
          }
          
-		//---
-		
-		
 		return ret;
 	}
 	
@@ -115,7 +114,7 @@ public class DatabaseOperationsMangirdas
         }
     }
     /*
-     * Sets date at id record to current date (now) in Sttions db table
+     * Sets date at id record to current date (now) in Stations db table
      */
     public static void touchPavilionDate(int id)
     {
@@ -168,22 +167,34 @@ public class DatabaseOperationsMangirdas
          connection.SetStoteles(ret);
     }
     
+    
     /*
-     * From getStoteles list to Database table Stoteles (adds anew if not created/ nothing if table created)
-     */
-	public static void getStotelesTextToDatabaseTable(DataListFactory connection) 
+     * 1. From getStoteles list of stationsConnection to Database table Stoteles 
+     * (adds anew if not created/ nothing if table created)
+     * 2. From getStoteles list of routesConnection to Database table Routes 
+     * (adds anew if not created/ nothing if table created)
+     * 3. NOT IMPLEMENTED: Fill Stations_Routes (many-to-many) table
+     */ 
+	public static void initializeDatabase(DataListFactory stationsConnection, RoutesListFactory routesConnection) 
 	{
 		try(Connection conn = DriverManager.getConnection(url))
 		{
 			try {
-				
+				int checkExit = 0;
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as rowcount from Stations");
-		
-			    // checking if table exists and has rows
+			    // checking if Stations table exists and has rows
 			    if (rs.next() == true) {
 			    	if(rs.getInt("rowcount") != 0)
-			      return;
+			    		checkExit++;
+			    }
+			    
+			    stmt = conn.createStatement();
+				rs = stmt.executeQuery("SELECT COUNT(*) as rowcount from Routes");
+			    // checking if Routes table exists and has rows
+			    if (rs.next() == true) {
+			    	if(rs.getInt("rowcount") != 0) checkExit++;
+			    if(checkExit==2) return;
 			    }
 			}
 			catch (Exception e)
@@ -191,10 +202,13 @@ public class DatabaseOperationsMangirdas
 				
 			}
 			
-			List<Station> stations = connection.getStoteles();
+			//Code below will exec if either Stations or Routes has NO DATA in it's tables OR does not exist
+			
+			List<Station> stations = stationsConnection.getStoteles();
+			List<Route> routes = routesConnection.getRoutes();
 			//CREATION
 			// SQL statement for creating a new table
-	        String sql = "CREATE TABLE IF NOT EXISTS Stations (\n"
+	        String sqlStations = "CREATE TABLE IF NOT EXISTS Stations (\n"
 	                + "	id integer PRIMARY KEY,\n"
 	                + "	name text NOT NULL,\n"
 	                + "	longitude text NOT NULL,\n"
@@ -202,35 +216,55 @@ public class DatabaseOperationsMangirdas
 	                + "	date DATE\n"//TEXT as ISO8601 strings ("YYYY-MM-DD HH:MM:SS.SSS")
 	                + " );";
 	        
+	        String sqlRoutes = "CREATE TABLE IF NOT EXISTS Routes (\n"
+	                + "	id integer PRIMARY KEY,\n"
+	                + "	routeMeanAndNb text NOT NULL,\n"
+	                + "	startStation text NOT NULL,\n"
+	                + "	endStation text NOT NULL\n"
+	                + " );";
+	        
 	        try (
-	                Statement stmt = conn.createStatement()) {
+	            Statement stmt = conn.createStatement()) {
 	            // create a new table
-	            stmt.execute(sql);
+	            stmt.execute(sqlStations);
+	            stmt.execute(sqlRoutes);
+	            
 	        } catch (SQLException e) {
 	            System.out.println(e.getMessage());
 	        }
 	        
 	        //INSERTION
-	        sql = "INSERT INTO Stations(name, longitude, latitude, date) VALUES(?,?,?,?)";
+	        sqlStations = "INSERT INTO Stations(name, longitude, latitude, date) VALUES(?,?,?,?)";
+	        sqlRoutes = "INSERT INTO Routes(routeMeanAndNb, startStation, endStation) VALUES(?,?,?)";
 	        
-	        //conn=null;
-	        PreparedStatement pstmt=null;
-	        
+	        PreparedStatement pstmtStations=null;
+	        PreparedStatement pstmtRoutes=null;
 	        try{
 	        	
 	        	//conn = connect();
-	        	pstmt = conn.prepareStatement(sql);
+	        	pstmtStations = conn.prepareStatement(sqlStations);
+	        	pstmtRoutes= conn.prepareStatement(sqlRoutes);
 	        	
 	        	if(conn == null) return;
 	        	conn.setAutoCommit(false);
 	        	
 	        	for(Station s : stations)
 	        	{
-		        	pstmt.setString(1, s.getName());
-		            pstmt.setString(2, s.getLongitude());
-		            pstmt.setString(3, s.getLatitude());
-		            pstmt.setString(4, null); 
-		            pstmt.executeUpdate();
+	        		pstmtStations.setString(1, s.getName());
+	        		pstmtStations.setString(2, s.getLongitude());
+		            pstmtStations.setString(3, s.getLatitude());
+		            pstmtStations.setString(4, null); 
+		            pstmtStations.executeUpdate();
+		            
+		            
+	        	}
+	        	
+	        	for(Route r : routes)
+	        	{
+	        		pstmtRoutes.setString(1, r.getRouteMeanAndNb());
+	        		pstmtRoutes.setString(2, r.getStartStation());
+	        		pstmtRoutes.setString(3, r.getEndStation());
+	        		pstmtRoutes.executeUpdate();
 	        	}
 	            
 	            conn.commit();
@@ -245,29 +279,27 @@ public class DatabaseOperationsMangirdas
 	            System.out.println(e1.getMessage());
 	        } finally {
 	            try {
-	                if (pstmt != null) pstmt.close();
+	                if (pstmtStations != null) pstmtStations.close();
+	                if (pstmtRoutes != null) pstmtRoutes.close();
 	                if (conn != null) conn.close();
 	            } catch (SQLException e3) {
 	                System.out.println(e3.getMessage());
 	            }
+	            
 	        }
 		}
-		catch(Exception e){}
+		catch(Exception e){
+			
+			System.out.println(e.toString());
+		}
 		finally
 		{
 			
 		}
 		
-	}
-	
-	/* TODO
-	 * Creates and populates Stations_Routes table pointing to Stations:id and Routes:id
-	 */
-	public static void CreateAndInsertStations_RoutesTable(DataListFactory connection) 
-	{
+		//3. NOT IMPLEMENTED: Fill Stations_Routes (many-to-many) table
 		
 	}
-	
 	
 	
 }
