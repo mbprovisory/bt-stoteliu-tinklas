@@ -34,6 +34,9 @@ public class Station implements Creatable {
 		return name;
 	}
 
+	public Date getDate() {
+		return date;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
