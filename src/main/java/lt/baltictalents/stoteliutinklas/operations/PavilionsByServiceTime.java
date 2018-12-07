@@ -21,13 +21,13 @@ public class PavilionsByServiceTime {
 	 * @param d
 	 * @return
 	 */
-	public List<Station> get(int d){                  // time elapsed
+	public List<Station> get(int d, String url){                  // time elapsed
 		
 		LocalDate dabar = LocalDate.now();
 		LocalDate segment = dabar.minusDays(d);       // last service date
 		
 		List<Station> data1 = 
-				DatabaseOperations.getPavilionsByOldestDate();
+				DatabaseOperations.getPavilionsByOldestDate(url);
 		
 		List<Station> oldest = new LinkedList<Station>();
 		for(Station old: data1) {

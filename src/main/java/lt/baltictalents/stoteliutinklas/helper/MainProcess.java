@@ -63,7 +63,8 @@ public class MainProcess {
 					{
 						incomingArgs = Helper.RegexParser(s);
 						//shift logic
-						previousQueryResults = SelectOperations(incomingArgs, previousQueryResults);
+						if(incomingArgs[0].toLowerCase().equals("help") || incomingArgs[0].toLowerCase().equals("?")) HelpMain();
+						else previousQueryResults = SelectOperations(incomingArgs, previousQueryResults);
 					}
 					
 					
@@ -236,7 +237,20 @@ public class MainProcess {
 			for(Station ss : ret) System.out.println(ss.toString());
 			
 		}
-		
+		else if (args[0+s].equalsIgnoreCase("PavilionsByServiceTime")) //getPavilionsByOldestDate
+		{
+			PavilionsByServiceTime instance = new PavilionsByServiceTime();
+			List<Station> stations = instance.get(Integer.parseInt(args[1+s]), dbUrl);
+			
+			if(args[0].equalsIgnoreCase("filter") && stationList!=null)
+			{
+				stationList.retainAll(stations);
+				stations = stationList;
+			}
+			
+			for(Station ss : stations) System.out.println(ss.toString());
+			ret = stations;
+		}
 		else HelpMain();
 		
 		return ret;
@@ -288,6 +302,7 @@ public class MainProcess {
 		System.out.println("4. SetPavilionDate <PRIMARY_KEY> <date as YYYY-MM-DD>");
 		System.out.println("5. TouchPavilionDate <PRIMARY_KEY>");
 		System.out.println("6. PavilionsByOldestDate");
+		System.out.println("7. PavilionsByServiceTime <ThresholdDays>");
 		System.out.println("-----------------------------------------------------");
 		System.out.println("Arba <args> rasykite tiesiai i ivesties laukeli.");
 		System.out.println("Noredami apsibrezti regiona, pirma iveskite uzklausa pagal ta regiona, o sekancia");
