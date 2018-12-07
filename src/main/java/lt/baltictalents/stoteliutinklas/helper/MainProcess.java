@@ -233,7 +233,7 @@ public class MainProcess {
 		else if (args[0+s].equalsIgnoreCase("PavilionsByOldestDate")) //getPavilionsByOldestDate
 		{
 			ret = DatabaseOperations.getPavilionsByOldestDate(dbUrl);
-			
+			for(Station ss : ret) System.out.println(ss.toString());
 			
 		}
 		
@@ -287,7 +287,7 @@ public class MainProcess {
 		System.out.println("---------------------SPRINT 3--------------------------------");
 		System.out.println("4. SetPavilionDate <PRIMARY_KEY> <date as YYYY-MM-DD>");
 		System.out.println("5. TouchPavilionDate <PRIMARY_KEY>");
-		System.out.println("4. SetPavilionDate <PRIMARY_KEY> <date as YYYY-MM-DD>");
+		System.out.println("6. PavilionsByOldestDate");
 		System.out.println("-----------------------------------------------------");
 		System.out.println("Arba <args> rasykite tiesiai i ivesties laukeli.");
 		System.out.println("Noredami apsibrezti regiona, pirma iveskite uzklausa pagal ta regiona, o sekancia");

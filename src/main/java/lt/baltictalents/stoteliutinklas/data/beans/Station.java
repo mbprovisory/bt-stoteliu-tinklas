@@ -64,7 +64,7 @@ public class Station implements Creatable {
 	
 	public String toString() {
 	    StringBuilder sb = new StringBuilder(getName());
-	    sb.append("    longit.: ").append(getLongitude()).append(";  latit.: ").append(getLatitude());
+	    sb.append("    longit.: ").append(getLongitude()).append(";  latit.: ").append(getLatitude()).append(this.date!=null?" "+(this.date.getYear()+1900)+"-"+(this.date.getMonth()+1)+"-"+this.date.getDate():" Niekada neatnaujintas");
 	    return sb.toString();
 	}
 	
