@@ -8,20 +8,24 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-
+import lt.baltictalents.stoteliutinklas.data.beans.Station;
+import lt.baltictalents.stoteliutinklas.data.database.DatabaseOperations;
 import lt.baltictalents.stoteliutinklas.data.layer.DataListFactory;
 
 import lt.baltictalents.stoteliutinklas.operations.PavilionsByRectangle;
+import lt.baltictalents.stoteliutinklas.operations.PavilionsByServiceTime;
 import lt.baltictalents.stoteliutinklas.operations.RoutesNumbersByStationName;
 import lt.baltictalents.stoteliutinklas.operations.SameStationsByCrossingRoutes;
 
 public class GenadijusTests {
 	
 	DataListFactory connection = new DataListFactory();
+	DatabaseOperations serviceTime = new DatabaseOperations();
 	
 	PavilionsByRectangle pavilionsByRectangle;
 	RoutesNumbersByStationName routesNumbersByStationName;
 	SameStationsByCrossingRoutes sameStationsByCrossingRoutes;
+	PavilionsByServiceTime pavilionsByServiceTime;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -29,6 +33,9 @@ public class GenadijusTests {
 		pavilionsByRectangle = new PavilionsByRectangle(connection);
 		routesNumbersByStationName = new RoutesNumbersByStationName(connection);
 		sameStationsByCrossingRoutes = new SameStationsByCrossingRoutes(connection);
+		pavilionsByServiceTime = new PavilionsByServiceTime();
+		
+		int i;
 	}
 	
 
@@ -51,7 +58,9 @@ public class GenadijusTests {
 	}
 	@Test
 	public void SameStationsByCrossingRoutes() {
-		List<String> test = sameStationsByCrossingRoutes.get("Autobusas 2G: Stotis - Santariškės","Autobusas 48 Santariškės - Laisvės pr. - Šeškinė");
+		List<String> test = 
+				sameStationsByCrossingRoutes.get("Autobusas 2G: Stotis - Santariškės",
+						"Autobusas 48 Santariškės - Laisvės pr. - Šeškinė");
 		
 		
 		assertTrue(test.get(0).equals("Vaikų ligoninė"));
@@ -62,6 +71,10 @@ public class GenadijusTests {
 		assertTrue(test.get(5).equals("Santariškės"));
 		assertTrue(test.get(6).equals("Vilniaus rajono poliklinika"));
 		
+	}
+	@Test
+	public void PavilionsByServiceTime() {
+		List<Station> test = pavilionsByServiceTime.get(0);
 	}
 
 }
