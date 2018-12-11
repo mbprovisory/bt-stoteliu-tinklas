@@ -17,6 +17,9 @@ import lt.baltictalents.stoteliutinklas.data.layer.*;
 //Paleidziam per cmd: java -cp JarFile.jar lt.baltictalents.stoteliutinklas.config.Application
 
 public class MainProcess {
+	
+	static String dbUrl = null;
+	
 	public static void HandleArgs(String[] args)
 	{
 		boolean bOuterCycle = true;
@@ -60,7 +63,8 @@ public class MainProcess {
 					{
 						incomingArgs = Helper.RegexParser(s);
 						//shift logic
-						previousQueryResults = SelectOperations(incomingArgs, previousQueryResults);
+						if(incomingArgs[0].toLowerCase().equals("help") || incomingArgs[0].toLowerCase().equals("?")) HelpMain();
+						else previousQueryResults = SelectOperations(incomingArgs, previousQueryResults);
 					}
 					
 					
@@ -196,39 +200,57 @@ public class MainProcess {
 			//ret = station;
 		}
 		
-		//CALL AREA RESPONSIBLE FOR DB TESTING
+		//SPRINT 3 code below----------------------------------------------------------------------------
 		else if (args[0+s].equalsIgnoreCase("init")) //Create Stations & Routes tables & insert from list
 		{
-			DatabaseOperations.initializeDatabase(connection, routesConnection);
+			dbUrl = DatabaseOperations.initializeDatabase(connection, routesConnection, args[1+s]);
+			if(dbUrl!=null)
+			{
+				connection.setConnectionType(3);// DB AS VIRTUAL
+				connection.SetStoteles(DatabaseOperations.getPavilionsByOldestDate(dbUrl));
+				//routesConnection.SetRoutes <------ Nothing to do with routes
+			}
 			ret = null;
 		}
-		else if (args[0+s].equalsIgnoreCase("spd")) //Stations set (or update) pavilion date
+		else if (args[0+s].equalsIgnoreCase("SetPavilionDate")) //Stations set (or update) pavilion date
 		{
-			DatabaseOperations.setPavilionDate(Integer.parseInt(args[1+s]), args[2+s]);
+			DatabaseOperations.setPavilionDate(Integer.parseInt(args[1+s]), args[2+s], dbUrl);
 			
 			ret = null;
 		}
 		//
-		else if (args[0+s].equalsIgnoreCase("sts")) //StationsDatabaseTableTogetStotelesList
+		else if (args[0+s].equalsIgnoreCase("_sts_debug_")) //StationsDatabaseTableTogetStotelesList
 		{
 			DatabaseOperations.StationsDatabaseTableTogetStotelesList(connection);
 			
 			ret = null;
 		}
-		else if (args[0+s].equalsIgnoreCase("tpd")) //touchPavilionDate
+		else if (args[0+s].equalsIgnoreCase("TouchPavilionDate")) //touchPavilionDate
 		{
-			DatabaseOperations.touchPavilionDate(Integer.parseInt(args[1+s]));
+			DatabaseOperations.touchPavilionDate(Integer.parseInt(args[1+s]), dbUrl);
 			
 			ret = null;
 		}
-		else if (args[0+s].equalsIgnoreCase("gpod")) //getPavilionsByOldestDate
+		else if (args[0+s].equalsIgnoreCase("PavilionsByOldestDate")) //getPavilionsByOldestDate
 		{
-			ret = DatabaseOperations.getPavilionsByOldestDate();
-			
+			ret = DatabaseOperations.getPavilionsByOldestDate(dbUrl);
+			for(Station ss : ret) System.out.println(ss.toString());
 			
 		}
-		//END CALL AREA RESPONSIBLE FOR DB TESTING getStotelesTextToDatabaseTable
-		
+		else if (args[0+s].equalsIgnoreCase("PavilionsByServiceTime")) //getPavilionsByOldestDate
+		{
+			PavilionsByServiceTime instance = new PavilionsByServiceTime();
+			List<Station> stations = instance.get(Integer.parseInt(args[1+s]), dbUrl);
+			
+			if(args[0].equalsIgnoreCase("filter") && stationList!=null)
+			{
+				stationList.retainAll(stations);
+				stations = stationList;
+			}
+			
+			for(Station ss : stations) System.out.println(ss.toString());
+			ret = stations;
+		}
 		else HelpMain();
 		
 		return ret;
@@ -238,14 +260,22 @@ public class MainProcess {
 	static void HelpMain()
 	{
 		System.out.println("-----------------BT-STOTELIU-TINKLAS----------------");
-
-		System.out.println("Prasome programa paleisti taip:");
+		System.out.print("Duombazes statusas: "+DatabaseInitStatus());
+		System.out.println(" Prasome programa paleisti taip:");
 		ExecInstructions();
 		System.out.println("Kur <args> yra:");
 		HelpCommandsList();
 		System.out.println("Jei tarp <args> pasitaiko zodziai neapskliausti <>, juos taip ir reiktu ivesti.");
 		System.out.println("Keli zodziai viename argumente ivedami su kabutemis, pvz.: \"vienas du\".");
 	}
+	
+	private static String DatabaseInitStatus() {
+		if(dbUrl!=null) return "VEIKIA -> " + dbUrl;
+		else return "NEINICIALIZUOTA. Inicializavimui iveskite: init <direktorija>/<failo_pavadinimas>.db\n"
+				+ "Pvz.: init C:/db.db\n"
+				+ "DIREKTORIJA VARTOTOJO PRIVALO BUTI SUKURTA PRIES ATLIEKANT SIA OPERACIJA\n";
+	}
+	
 	
 	static void ExecInstructions()
 	{
@@ -268,6 +298,11 @@ public class MainProcess {
 		System.out.println("5. SameStationsByCrossingRoutes <Route1> <Route2>");
 		System.out.println("6. SameStationPavilionsByRange <RangeInMeters>");
 		System.out.println("7. SameStationsByMoreRoutes <PavilionsSize>");
+		System.out.println("---------------------SPRINT 3--------------------------------");
+		System.out.println("4. SetPavilionDate <PRIMARY_KEY> <date as YYYY-MM-DD>");
+		System.out.println("5. TouchPavilionDate <PRIMARY_KEY>");
+		System.out.println("6. PavilionsByOldestDate");
+		System.out.println("7. PavilionsByServiceTime <ThresholdDays>");
 		System.out.println("-----------------------------------------------------");
 		System.out.println("Arba <args> rasykite tiesiai i ivesties laukeli.");
 		System.out.println("Noredami apsibrezti regiona, pirma iveskite uzklausa pagal ta regiona, o sekancia");

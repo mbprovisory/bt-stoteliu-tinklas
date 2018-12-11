@@ -1,5 +1,6 @@
 package lt.baltictalents.stoteliutinklas.data.database;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -45,11 +46,13 @@ public class DatabaseOperations
         return conn;
     }
     
+    
     /*
      * Gets stations from the database Stations record and returns List<Stations> by oldest to newest pavilions
      */
-	public static List<Station> getPavilionsByOldestDate()
+	public static List<Station> getPavilionsByOldestDate(String dbUrl)
 	{
+		url = dbUrl;
 		List<Station> ret = new LinkedList<Station>();
 		
 		//---
@@ -95,8 +98,9 @@ public class DatabaseOperations
      * date as YYYY-MM-DD
      * Sets a date of the pavilion in Stations db table
      */
-    public static void setPavilionDate(int id, String date) 
+    public static void setPavilionDate(int id, String date, String dbUrl) 
     {
+    	url = dbUrl;
     	String sql = "UPDATE Stations SET date = ?"
                 + " WHERE id = ?";
     	
@@ -116,20 +120,21 @@ public class DatabaseOperations
     /*
      * Sets date at id record to current date (now) in Stations db table
      */
-    public static void touchPavilionDate(int id)
+    public static void touchPavilionDate(int id, String dbUrl)
     {
+    	url = dbUrl;
     	DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     	LocalDate now = LocalDate.now();
     	String date = df.format(now);
     	
-    	setPavilionDate(id, date);
+    	setPavilionDate(id, date, url);
     }
 
 
 	/*
 	 * Database table Stoteles to connection's getList
 	 */
-    public static void StationsDatabaseTableTogetStotelesList(DataListFactory connection)
+    public static void StationsDatabaseTableTogetStotelesList(DataListFactory connection) //UNKNOWN USAGE
     {
     	 String sql = "SELECT name, longitude, latitude, date FROM Stations";
          List<Station> ret = new LinkedList<Station>();
@@ -175,9 +180,13 @@ public class DatabaseOperations
      * (adds anew if not created/ nothing if table created)
      * 3. NOT IMPLEMENTED: Fill Stations_Routes (many-to-many) table
      */ 
-	public static void initializeDatabase(DataListFactory stationsConnection, RoutesListFactory routesConnection) 
+	public static String initializeDatabase(DataListFactory stationsConnection, RoutesListFactory routesConnection, String target) 
 	{
-		try(Connection conn = DriverManager.getConnection(url))
+		//jdbc:sqlite:C:\\sqlitedbs\\StoteliuTinklas.db
+		//create: C:\\a\\b\\test.txt
+		if(new File(target).isFile()) return "jdbc:sqlite:"+target;
+		//jdbc:sqlite:C:/sqlite/db/
+		try(Connection conn = DriverManager.getConnection("jdbc:sqlite:"+target))
 		{
 			try {
 				int checkExit = 0;
@@ -194,7 +203,7 @@ public class DatabaseOperations
 			    // checking if Routes table exists and has rows
 			    if (rs.next() == true) {
 			    	if(rs.getInt("rowcount") != 0) checkExit++;
-			    if(checkExit==2) return;
+			    if(checkExit==2) return null;
 			    }
 			}
 			catch (Exception e)
@@ -245,7 +254,7 @@ public class DatabaseOperations
 	        	pstmtStations = conn.prepareStatement(sqlStations);
 	        	pstmtRoutes= conn.prepareStatement(sqlRoutes);
 	        	
-	        	if(conn == null) return;
+	        	if(conn == null) return null;
 	        	conn.setAutoCommit(false);
 	        	
 	        	for(Station s : stations)
@@ -298,6 +307,7 @@ public class DatabaseOperations
 		}
 		
 		//3. NOT IMPLEMENTED: Fill Stations_Routes (many-to-many) table
+		return "jdbc:sqlite:"+target;
 		
 	}
 	
